@@ -103,6 +103,27 @@
                                 </ul>
                             </div>
                         </li>
+                        <li class="nav-item">
+                            <a data-bs-toggle="collapse" href="#transaksi">
+                                <i class="fas fa-exchange-alt"></i>
+                                <p>Transaksi</p>
+                                <span class="caret"></span>
+                            </a>
+                            <div class="collapse" id="transaksi">
+                                <ul class="nav nav-collapse">
+                                    <li class="">
+                                        <a href="{{ route('barang-masuk.index') }}">
+                                            <span class="sub-item">Barang Masuk</span>
+                                        </a>
+                                    </li>
+                                    <li class="">
+                                        <a href="">
+                                            <span class="sub-item">Pesanan</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
                     </ul>
                 </div>
             </div>
