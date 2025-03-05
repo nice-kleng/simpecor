@@ -4,62 +4,60 @@ namespace App\Http\Controllers;
 
 use App\Models\KategoriCor;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class KategoriCorController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $kategoris = KategoriCor::all();
+        return view('admin.kategori_cor', compact('kategoris'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nama_kategori' => 'required',
+            'harga' => 'required|numeric',
+            'deskripsi' => 'required'
+        ]);
+
+        KategoriCor::create([
+            'nama_kategori' => $request->nama_kategori,
+            'slug' => Str::slug($request->nama_kategori),
+            'harga' => $request->harga,
+            'deskripsi' => $request->deskripsi
+        ]);
+
+        return redirect()->route('kategori.index')->with('success', 'Kategori berhasil ditambahkan');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(KategoriCor $kategoriCor)
+    public function edit(KategoriCor $kategori)
     {
-        //
+        return response()->json($kategori);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(KategoriCor $kategoriCor)
+    public function update(Request $request, KategoriCor $kategori)
     {
-        //
+        $request->validate([
+            'nama_kategori' => 'required',
+            'harga' => 'required|numeric',
+            'deskripsi' => 'required'
+        ]);
+
+        $kategori->update([
+            'nama_kategori' => $request->nama_kategori,
+            'slug' => Str::slug($request->nama_kategori),
+            'harga' => $request->harga,
+            'deskripsi' => $request->deskripsi
+        ]);
+
+        return redirect()->route('kategori.index')->with('success', 'Kategori berhasil diupdate');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, KategoriCor $kategoriCor)
+    public function destroy(KategoriCor $kategori)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(KategoriCor $kategoriCor)
-    {
-        //
+        $kategori->delete();
+        return redirect()->route('kategori.index')->with('success', 'Kategori berhasil dihapus');
     }
 }

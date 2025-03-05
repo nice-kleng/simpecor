@@ -86,17 +86,17 @@
                                         </a>
                                     </li>
                                     <li class="">
-                                        <a href="">
+                                        <a href="{{ route('mitra.index') }}">
                                             <span class="sub-item">Mitra</span>
                                         </a>
                                     </li>
                                     <li class="">
-                                        <a href="">
+                                        <a href="{{ route('bahan.index') }}">
                                             <span class="sub-item">Bahan Baku</span>
                                         </a>
                                     </li>
                                     <li class="">
-                                        <a href="">
+                                        <a href="{{ route('kategori.index') }}">
                                             <span class="sub-item">Kategori Product Cor</span>
                                         </a>
                                     </li>
@@ -276,6 +276,43 @@
         $('.datatable').DataTable();
     </script>
 
+    @if (session('success'))
+        <script>
+            $(document).ready(function() {
+                $.notify({
+                    icon: 'fas fa-check',
+                    title: 'Berhasil',
+                    message: '{{ session('success') }}',
+                }, {
+                    type: 'success',
+                    placement: {
+                        from: "top",
+                        align: "right"
+                    },
+                    time: 1000,
+                });
+            });
+        </script>
+    @endif
+
+    @if (session('error'))
+        <script>
+            $(document).ready(function() {
+                $.notify({
+                    icon: 'fas fa-times',
+                    title: 'Gagal',
+                    message: '{{ session('error') }}',
+                }, {
+                    type: 'danger',
+                    placement: {
+                        from: "top",
+                        align: "right"
+                    },
+                    time: 1000,
+                });
+            });
+        </script>
+    @endif
     @stack('scripts')
 </body>
 

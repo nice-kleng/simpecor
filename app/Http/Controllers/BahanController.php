@@ -12,7 +12,8 @@ class BahanController extends Controller
      */
     public function index()
     {
-        //
+        $bahans = Bahan::all();
+        return view('admin.bahan_baku', compact('bahans'));
     }
 
     /**
@@ -28,7 +29,15 @@ class BahanController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nama_bahan' => 'required',
+            'stok' => 'required|integer',
+            'satuan' => 'required',
+            'harga' => 'required|integer',
+        ]);
+
+        Bahan::create($request->all());
+        return redirect()->route('bahan.index')->with('success', 'Bahan Baku berhasil ditambahkan');
     }
 
     /**
@@ -44,7 +53,7 @@ class BahanController extends Controller
      */
     public function edit(Bahan $bahan)
     {
-        //
+        return response()->json($bahan);
     }
 
     /**
@@ -52,7 +61,15 @@ class BahanController extends Controller
      */
     public function update(Request $request, Bahan $bahan)
     {
-        //
+        $request->validate([
+            'nama_bahan' => 'required',
+            'stok' => 'required|integer',
+            'satuan' => 'required',
+            'harga' => 'required|integer',
+        ]);
+
+        $bahan->update($request->all());
+        return redirect()->route('bahan.index')->with('success', 'Bahan Baku berhasil diupdate');
     }
 
     /**
@@ -60,6 +77,7 @@ class BahanController extends Controller
      */
     public function destroy(Bahan $bahan)
     {
-        //
+        $bahan->delete();
+        return redirect()->route('bahan.index')->with('success', 'Bahan Baku berhasil dihapus');
     }
 }

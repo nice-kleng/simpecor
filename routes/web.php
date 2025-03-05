@@ -1,7 +1,10 @@
 <?php
 
 use App\Http\Controllers\AuthenticateController;
+use App\Http\Controllers\BahanController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\KategoriCorController;
+use App\Http\Controllers\MitraController;
 use App\Http\Controllers\SupplierController;
 use Illuminate\Support\Facades\Route;
 
@@ -16,5 +19,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resources([
         'supplier' => SupplierController::class,
+        'mitra' => MitraController::class,
+        'bahan' => BahanController::class,
+        'kategori' => KategoriCorController::class,
     ]);
 });

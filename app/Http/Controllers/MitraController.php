@@ -3,7 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Mitra;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class MitraController extends Controller
 {
@@ -12,7 +17,8 @@ class MitraController extends Controller
      */
     public function index()
     {
-        //
+        $mitras = Mitra::orderBy('created_at', 'asc')->get();
+        return view('admin.mitra', compact('mitras'));
     }
 
     /**
@@ -28,7 +34,38 @@ class MitraController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nama_mitra' => 'required',
+            'nama_pemilik' => 'required',
+            'alamat' => 'required',
+            'email' => 'required|email|unique:users,email',
+            'telp' => 'required',
+            'npwp' => 'required',
+        ]);
+
+        try {
+            DB::beginTransaction();
+
+            // Create user account
+            $user = User::create([
+                'name' => $request->nama_mitra,
+                'email' => $request->email,
+                'password' => Hash::make(Str::random(8)), // Generate random password
+                'role' => 'mitra'
+            ]);
+
+            // Create mitra with user_id
+            $mitra = new Mitra($request->all());
+            $mitra->user_id = $user->id;
+            $mitra->save();
+
+            DB::commit();
+            return redirect()->route('mitra.index')->with('success', 'Mitra berhasil ditambahkan');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error("message: {$e->getMessage()} file: {$e->getFile()} line: {$e->getLine()}");
+            return redirect()->back()->with('error', 'Gagal menambahkan mitra');
+        }
     }
 
     /**
@@ -44,7 +81,7 @@ class MitraController extends Controller
      */
     public function edit(Mitra $mitra)
     {
-        //
+        return response()->json($mitra);
     }
 
     /**
@@ -52,7 +89,31 @@ class MitraController extends Controller
      */
     public function update(Request $request, Mitra $mitra)
     {
-        //
+        $request->validate([
+            'nama_mitra' => 'required',
+            'alamat' => 'required',
+            'email' => 'required|email|unique:users,email,' . $mitra->user_id,
+            'telp' => 'required',
+        ]);
+
+        try {
+            DB::beginTransaction();
+
+            // Update user data
+            $mitra->user->update([
+                'name' => $request->nama_mitra,
+                'email' => $request->email,
+            ]);
+
+            // Update mitra data
+            $mitra->update($request->all());
+
+            DB::commit();
+            return redirect()->route('mitra.index')->with('success', 'Mitra berhasil diperbarui');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Gagal memperbarui mitra');
+        }
     }
 
     /**
@@ -60,6 +121,18 @@ class MitraController extends Controller
      */
     public function destroy(Mitra $mitra)
     {
-        //
+        try {
+            DB::beginTransaction();
+
+            // Delete associated user
+            $mitra->user->delete();
+            // Mitra will be automatically deleted due to cascade delete
+
+            DB::commit();
+            return redirect()->route('mitra.index')->with('success', 'Mitra berhasil dihapus');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->route('mitra.index')->with('success', 'Gagal menghapus mitra');
+        }
     }
 }
