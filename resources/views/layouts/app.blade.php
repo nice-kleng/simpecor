@@ -67,42 +67,46 @@
                 <div class="sidebar-content">
                     <ul class="nav nav-secondary">
                         <li class="nav-item {{ request()->is('dashboard') ? 'active' : '' }}">
-                            <a href="">
+                            <a href="{{ route('dashboard') }}">
                                 <i class="fas fa-home"></i>
                                 <p>Dashboard</p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a data-bs-toggle="collapse" href="#masterdt">
-                                <i class="fas fa-database"></i>
-                                <p>Data Master</p>
-                                <span class="caret"></span>
-                            </a>
-                            <div class="collapse" id="masterdt">
-                                <ul class="nav nav-collapse">
-                                    <li class="">
-                                        <a href="{{ route('supplier.index') }}">
-                                            <span class="sub-item">Supplier</span>
-                                        </a>
-                                    </li>
-                                    <li class="">
-                                        <a href="{{ route('mitra.index') }}">
-                                            <span class="sub-item">Mitra</span>
-                                        </a>
-                                    </li>
-                                    <li class="">
-                                        <a href="{{ route('bahan.index') }}">
-                                            <span class="sub-item">Bahan Baku</span>
-                                        </a>
-                                    </li>
-                                    <li class="">
-                                        <a href="{{ route('kategori.index') }}">
-                                            <span class="sub-item">Kategori Product Cor</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
+
+                        @if (auth()->user()->role === 'admin')
+                            <li class="nav-item">
+                                <a data-bs-toggle="collapse" href="#masterdt">
+                                    <i class="fas fa-database"></i>
+                                    <p>Data Master</p>
+                                    <span class="caret"></span>
+                                </a>
+                                <div class="collapse" id="masterdt">
+                                    <ul class="nav nav-collapse">
+                                        <li class="{{ request()->routeIs('supplier.*') ? 'active' : '' }}">
+                                            <a href="{{ route('supplier.index') }}">
+                                                <span class="sub-item">Supplier</span>
+                                            </a>
+                                        </li>
+                                        <li class="{{ request()->routeIs('mitra.*') ? 'active' : '' }}">
+                                            <a href="{{ route('mitra.index') }}">
+                                                <span class="sub-item">Mitra</span>
+                                            </a>
+                                        </li>
+                                        <li class="{{ request()->routeIs('bahan.*') ? 'active' : '' }}">
+                                            <a href="{{ route('bahan.index') }}">
+                                                <span class="sub-item">Bahan Baku</span>
+                                            </a>
+                                        </li>
+                                        <li class="{{ request()->routeIs('kategori.*') ? 'active' : '' }}">
+                                            <a href="{{ route('kategori.index') }}">
+                                                <span class="sub-item">Kategori Product Cor</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                        @endif
+
                         <li class="nav-item">
                             <a data-bs-toggle="collapse" href="#transaksi">
                                 <i class="fas fa-exchange-alt"></i>
@@ -111,13 +115,15 @@
                             </a>
                             <div class="collapse" id="transaksi">
                                 <ul class="nav nav-collapse">
-                                    <li class="">
-                                        <a href="{{ route('barang-masuk.index') }}">
-                                            <span class="sub-item">Barang Masuk</span>
-                                        </a>
-                                    </li>
-                                    <li class="">
-                                        <a href="">
+                                    @if (auth()->user()->role === 'admin')
+                                        <li class="{{ request()->routeIs('barang-masuk.*') ? 'active' : '' }}">
+                                            <a href="{{ route('barang-masuk.index') }}">
+                                                <span class="sub-item">Barang Masuk</span>
+                                            </a>
+                                        </li>
+                                    @endif
+                                    <li class="{{ request()->routeIs('pemesanan.*') ? 'active' : '' }}">
+                                        <a href="{{ route('pemesanan.index') }}">
                                             <span class="sub-item">Pesanan</span>
                                         </a>
                                     </li>
