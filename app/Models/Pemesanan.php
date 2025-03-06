@@ -32,6 +32,6 @@ class Pemesanan extends Model
 
     public function kategoriCor()
     {
-        return $this->belongsTo(KategoriCor::class);
+        return $this->belongsTo(KategoriCor::class, 'kategori_cor_id');
     }
 }
