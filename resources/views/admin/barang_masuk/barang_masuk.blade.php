@@ -33,8 +33,8 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->kode_transaksi }}</td>
                                 <td>{{ $item->tanggal }}</td>
-                                <td>{{ $item->bahan->nama }}</td>
-                                <td>{{ $item->supplier->nama }}</td>
+                                <td>{{ $item->bahan->nama_bahan }}</td>
+                                <td>{{ $item->supplier->nama_supplier }}</td>
                                 <td>{{ $item->jumlah }}</td>
                                 <td>Rp {{ number_format($item->harga) }}</td>
                                 <td>Rp {{ number_format($item->total) }}</td>

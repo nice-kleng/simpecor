@@ -31,6 +31,10 @@
                                         <td>{{ $kategori->harga }}</td>
                                         <td>{{ $kategori->deskripsi }}</td>
                                         <td>
+                                            <a href="{{ route('komposisi.create', $kategori->id) }}"
+                                                class="btn btn-info btn-sm" title="Detail Komposisi">Bahan Baku</a>
+                                        </td>
+                                        <td>
                                             <a href="javascript:void(0)" data-id="{{ $kategori->id }}"
                                                 class="btn btn-warning btn-sm btn-edit"><i class="fas fa-edit"></i></a>
                                             <form action="{{ route('kategori.destroy', $kategori->id) }}" method="POST"

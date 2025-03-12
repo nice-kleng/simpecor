@@ -7,6 +7,7 @@ use App\Http\Controllers\KategoriCorController;
 use App\Http\Controllers\MitraController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\BarangMasukController;
+use App\Http\Controllers\KomposisiController;
 use App\Http\Controllers\PemesananController;
 use Illuminate\Support\Facades\Route;
 
@@ -28,6 +29,14 @@ Route::group(['middleware' => 'auth'], function () {
             'kategori' => KategoriCorController::class,
             'barang-masuk' => BarangMasukController::class,
         ]);
+
+        Route::controller(KomposisiController::class)->group(function () {
+            Route::get('/komposisi/{id}/create', 'create')->name('komposisi.create');
+            Route::post('/komposisi', 'store')->name('komposisi.store');
+            Route::get('/komposisi/{id}/edit', 'edit')->name('komposisi.edit');
+            Route::put('/komposisi/{id}', 'update')->name('komposisi.update');
+            Route::delete('/komposisi/{id}', 'destroy')->name('komposisi.destroy');
+        });
 
         Route::patch('/barang-masuk/{barangMasuk}/status', [BarangMasukController::class, 'updateStatus'])
             ->name('barang-masuk.status');

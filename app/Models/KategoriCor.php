@@ -13,4 +13,9 @@ class KategoriCor extends Model
     {
         return $this->hasMany(Pemesanan::class);
     }
+
+    public function komposisi()
+    {
+        return $this->hasMany(Komposisi::class);
+    }
 }

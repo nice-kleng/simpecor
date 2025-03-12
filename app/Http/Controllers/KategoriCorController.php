@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bahan;
 use App\Models\KategoriCor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
