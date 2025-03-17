@@ -101,7 +101,8 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Harga</label>
-                                <input type="number" name="harga" class="form-control" required>
+                                <input type="number" name="harga" class="form-control" value="{{ $pemesanan->harga() }}"
+                                    required>
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -125,7 +126,7 @@
         </div>
     @endif
 
-    @if ($pemesanan->status_pengerjaan === 'disetujui' && !$pemesanan->bukti_pembayaran)
+    @if ($pemesanan->status_pengerjaan === 'disetujui' && !$pemesanan->bukti_pembayaran && auth()->user()->role === 'mitra')
         <div class="card mt-4">
             <div class="card-header">
                 <h4 class="card-title">Upload Bukti Pembayaran</h4>

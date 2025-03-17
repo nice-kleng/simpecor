@@ -13,27 +13,22 @@ class BahanSeeder extends Seeder
             [
                 'nama_bahan' => 'Pasir Silika',
                 'satuan' => 'kg',
-                'stok' => 1000
+                'stok' => 500000
             ],
             [
-                'nama_bahan' => 'Besi Scrap',
-                'satuan' => 'kg',
-                'stok' => 500
+                'nama_bahan' => 'Air',
+                'satuan' => 'liter',
+                'stok' => 100000
             ],
             [
-                'nama_bahan' => 'Aluminium Ingot',
+                'nama_bahan' => 'Semen',
                 'satuan' => 'kg',
-                'stok' => 300
+                'stok' => 100000
             ],
             [
-                'nama_bahan' => 'Bentonit',
+                'nama_bahan' => 'Kerikil',
                 'satuan' => 'kg',
-                'stok' => 200
-            ],
-            [
-                'nama_bahan' => 'Grafit',
-                'satuan' => 'kg',
-                'stok' => 150
+                'stok' => 100000
             ],
         ];
 

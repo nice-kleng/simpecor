@@ -12,34 +12,34 @@ class KategoriCorSeeder extends Seeder
     {
         $kategori_cors = [
             [
-                'nama_kategori' => 'Plat Cor',
-                'slug' => Str::slug('Plat Cor'),
-                'harga' => 85000,
-                'deskripsi' => 'Plat cor beton dengan ketebalan standar'
+                'nama_kategori' => 'BISJ K. 80',
+                'slug' => Str::slug('BISJ K. 80'),
+                'harga' => 650000,
+                'deskripsi' => '12 pcs/m2, 80mm tebal'
             ],
             [
-                'nama_kategori' => 'Tiang Cor',
-                'slug' => Str::slug('Tiang Cor'),
-                'harga' => 95000,
-                'deskripsi' => 'Tiang cor beton untuk konstruksi'
+                'nama_kategori' => 'BISJ K. 100',
+                'slug' => Str::slug('BISJ K. 100'),
+                'harga' => 660000,
+                'deskripsi' => '10 pcs/m2, 100mm tebal'
             ],
             [
-                'nama_kategori' => 'Gorong-gorong',
-                'slug' => Str::slug('Gorong-gorong'),
-                'harga' => 120000,
-                'deskripsi' => 'Gorong-gorong beton untuk saluran air'
+                'nama_kategori' => 'BISJ K. 120',
+                'slug' => Str::slug('BISJ K. 120',),
+                'harga' => 675000,
+                'deskripsi' => '8 pcs/m2, 120mm tebal'
             ],
             [
-                'nama_kategori' => 'Saluran Air',
-                'slug' => Str::slug('Saluran Air'),
-                'harga' => 75000,
-                'deskripsi' => 'Saluran air beton precast'
+                'nama_kategori' => 'BISJ K. 150',
+                'slug' => Str::slug('BISJ K. 150',),
+                'harga' => 685000,
+                'deskripsi' => '6 pcs/m2, 150mm tebal'
             ],
             [
-                'nama_kategori' => 'Paving Block',
-                'slug' => Str::slug('Paving Block'),
-                'harga' => 65000,
-                'deskripsi' => 'Paving block beton untuk area parkir dan jalan'
+                'nama_kategori' => 'BISJ K. 200',
+                'slug' => Str::slug('BISJ K. 200',),
+                'harga' => 720000,
+                'deskripsi' => '5 pcs/m2, 200mm tebal',
             ]
         ];
 

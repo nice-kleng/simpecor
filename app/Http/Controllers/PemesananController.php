@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Pemesanan;
 use App\Models\KategoriCor;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class PemesananController extends Controller
@@ -93,16 +94,38 @@ class PemesananController extends Controller
 
     public function verifyPembayaran(Pemesanan $pemesanan, Request $request)
     {
-        $status = $request->status;
-        $keterangan = $request->keterangan;
+        DB::beginTransaction();
+        try {
+            $status = $request->status;
+            $keterangan = $request->keterangan;
 
-        $pemesanan->update([
-            'status_pembayaran' => $status,
-            'status_pengerjaan' => $status == 'valid' ? 'proses_pengerjaan' : 'disetujui',
-            'keterangan_pembayaran' => $status == 'invalid' ? $keterangan : null
-        ]);
+            if ($status == 'valid') {
+                // Load komposisi dengan bahan baku
+                $komposisis = $pemesanan->kategoriCor->komposisi()->with('bahanBaku')->get();
 
-        return redirect()->back()->with('success', 'Status pembayaran berhasil diupdate');
+                foreach ($komposisis as $komposisi) {
+                    // Hitung total pengurangan: jumlah komposisi per m³ * volume cor
+                    $pengurangan = $komposisi->jumlah * $pemesanan->volume_cor;
+
+                    // Update stok bahan baku
+                    $komposisi->bahanBaku->update([
+                        'stok' => $komposisi->bahanBaku->stok - $pengurangan
+                    ]);
+                }
+            }
+
+            $pemesanan->update([
+                'status_pembayaran' => $status,
+                'status_pengerjaan' => $status == 'valid' ? 'proses_pengerjaan' : 'disetujui',
+                'keterangan_pembayaran' => $status == 'invalid' ? $keterangan : null
+            ]);
+
+            DB::commit();
+            return redirect()->back()->with('success', 'Status pembayaran berhasil diupdate');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $th->getMessage());
+        }
     }
 
     public function updateStatus(Pemesanan $pemesanan, Request $request)

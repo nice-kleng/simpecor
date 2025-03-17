@@ -1,8 +1,9 @@
-@extends('layouts.app', ['title' => 'Komposisi Cor', 'pageDescrition' => 'Kompisi Cor Type ' . $kategori->nama_kategori])
+@extends('layouts.app', ['title' => 'Komposisi Cor', 'pageDescrition' => 'Kompisi Cor Type ' . $kategori->nama_kategori . ' untuk setiap m³'])
 
 @section('action-button')
     <a href="javascript:void(0)" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalKomposisi">Tambah
-        Kategori</a>
+        Bahan</a>
+    <a href="{{ route('kategori.index') }}" class="btn btn-sm btn-secondary" title="Kembali">Kembali</a>
 @endsection
 
 @section('content')
@@ -16,6 +17,7 @@
                                 <tr>
                                     <th>No</th>
                                     <th>Bahan Baku</th>
+                                    <th>Satuan</th>
                                     <th>Jumlah</th>
                                     <th><i class="fas fa-gear"></i></th>
                                 </tr>
@@ -24,7 +26,9 @@
                                 @foreach ($kategori->komposisi as $komposisi)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $komposisi->bahanBaku->nama_bahan }}</td>
+                                        <td>{{ $komposisi->bahanBaku->nama_bahan }}
+                                        </td>
+                                        <td>{{ $komposisi->bahanBaku->satuan }}</td>
                                         <td>{{ $komposisi->jumlah }}</td>
                                         <td>
                                             <a href="javascript:void(0)" data-id="{{ $komposisi->id }}"
@@ -66,7 +70,8 @@
                             <select name="bahan_baku" id="bahan_baku" class="form-select">
                                 <option value="" selected disabled>Pilih Bahan Baku</option>
                                 @foreach ($bahanbakus as $bahanbaku)
-                                    <option value="{{ $bahanbaku->id }}">{{ $bahanbaku->nama_bahan }}</option>
+                                    <option value="{{ $bahanbaku->id }}">
+                                        {{ $bahanbaku->nama_bahan . ' (' . $bahanbaku->satuan . ')' }}</option>
                                 @endforeach
                             </select>
                             <div class="invalid-feedback"></div>
@@ -105,12 +110,13 @@
             // Edit button
             $('.btn-edit').on('click', function() {
                 const id = $(this).data('id');
-                const url = `{{ route('komposisi.edit', ':id') }}`.replace(':id', id);
+                const url = `{{ route('komposisi.edit', ['id' => ':id']) }}`.replace(':id', id);
                 $.get(url)
                     .done(function(data) {
                         modal.modal('show');
                         modal.find('.modal-title').text('Edit Komposisi');
-                        form.attr('action', "{{ route('komposisi.update', ':id') }}".replace(':id',
+                        form.attr('action', "{{ route('komposisi.update', ['id' => ':id']) }}".replace(
+                            ':id',
                             id));
                         $('#method').html('@method('PUT')');
 
