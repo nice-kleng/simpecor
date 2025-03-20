@@ -32,12 +32,6 @@ class Pemesanan extends Model
 
     public function kategoriCor()
     {
-        return $this->belongsTo(KategoriCor::class, 'kategori_cor_id');
-    }
-
-    public function harga()
-    {
-        $harga = $this->volume_cor * $this->kategoriCor->harga;
-        return $harga;
+        return $this->belongsTo(KategoriCor::class);
     }
 }
