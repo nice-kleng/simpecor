@@ -47,6 +47,11 @@
                     <input type="file" name="foto_lokasi" class="form-control" required>
                 </div>
 
+                <div class="form-group mt-3">
+                    <label class="form-label">Alamat Lengkap Lokasi Proyek</label>
+                    <textarea name="alamat_lokasi" id="alamat_lokasi" rows="5" class="form-control"></textarea>
+                </div>
+
                 <div class="mt-4">
                     <button type="submit" class="btn btn-primary">Simpan</button>
                     <a href="{{ route('pemesanan.index') }}" class="btn btn-danger">Batal</a>

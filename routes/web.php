@@ -54,4 +54,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::middleware(['checkRole:mitra'])->group(function () {
         Route::post('pemesanan/{pemesanan}/upload-bukti', [PemesananController::class, 'uploadBuktiPembayaran'])->name('pemesanan.upload-bukti');
     });
+
+    Route::get('/pemesanan/{pemesanan}/download-bukti-transafer', [PemesananController::class, 'downloadBuktiPembayaran'])->name('pemesanan.download-bukti-transfer');
+    Route::get('/pemesanan/{pemesanan}/download-foto-lokasi', [PemesananController::class, 'downloadFotoLokasi'])->name('pemesanan.download-foto-lokasi');
+    Route::get('/pemesanan/{pemesanan}/download-surat-jalan', [PemesananController::class, 'downloadSuratJalan'])->name('pemesanan.download-surat-jalan');
 });

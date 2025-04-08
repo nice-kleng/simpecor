@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Pemesanan;
 use App\Models\KategoriCor;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -130,7 +131,20 @@ class PemesananController extends Controller
 
     public function updateStatus(Pemesanan $pemesanan, Request $request)
     {
-        $pemesanan->update(['status_pengerjaan' => $request->status]);
+        $pemesanan->update([
+            'status_pengerjaan' => $request->status,
+            'catatan_pengerjaan' => $request->catatan_pengerjaan,
+            'tanggal_selesai' => $request->status == 'selesai' ? now() : null
+        ]);
         return redirect()->back()->with('success', 'Status pengerjaan berhasil diupdate');
+    }
+
+    public function downloadSuratJalan(Pemesanan $pemesanan)
+    {
+        $pemesanan->load(['mitra', 'kategoriCor']);
+        $pdf = Pdf::loadView('pemesanan.surat-jalan', compact('pemesanan'));
+        $pdf->setPaper('A4', 'portrait');
+        $filename = 'surat_jalan_' . $pemesanan->id . '_' . date('Ymd') . '.pdf';
+        return $pdf->stream($filename);
     }
 }

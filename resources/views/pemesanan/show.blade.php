@@ -2,6 +2,10 @@
 
 @section('title', 'Detail Pemesanan')
 
+@push('styles')
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css" rel="stylesheet">
+@endpush
+
 @section('content')
     <div class="row">
         <div class="col-md-8">
@@ -59,6 +63,21 @@
                                 <th>Status Pengerjaan</th>
                                 <td><span class="badge bg-info">{{ ucfirst($pemesanan->status_pengerjaan) }}</span></td>
                             </tr>
+                            @if ($pemesanan->status_pengerjaan === 'proses_pengerjaan' || $pemesanan->status_pengerjaan === 'selesai')
+                                <tr>
+                                    <th>Surat Jalan</th>
+                                    <td>
+                                        <a href="{{ route('pemesanan.download-surat-jalan', $pemesanan->id) }}"
+                                            title="Download Surat Jalan" class="btn btn-sm btn-danger">
+                                            <i class="fas fa-file-pdf"></i> Surat Jalan
+                                        </a>
+                                    </td>
+                                </tr>
+                            @endif
+                            <tr>
+                                <th>Tanggal Selesai</th>
+                                <td>{{ date('d F Y', strtotime($pemesanan->tanggal_selesai)) }}</td>
+                            </tr>
                         </table>
                     </div>
                 </div>
@@ -71,7 +90,11 @@
                     <h4 class="card-title">Foto Lokasi</h4>
                 </div>
                 <div class="card-body">
-                    <img src="{{ Storage::url($pemesanan->foto_lokasi) }}" alt="Foto Lokasi" class="img-fluid rounded">
+                    {{-- <img src="{{ Storage::url($pemesanan->foto_lokasi) }}" alt="Foto Lokasi" class="img-fluid rounded"> --}}
+                    <a href="{{ Storage::url($pemesanan->foto_lokasi) }}" data-lightbox="image-lokasi"
+                        data-title="Foto Lokasi">
+                        <img src="{{ Storage::url($pemesanan->foto_lokasi) }}" alt="Foto Lokasi" class="img-fluid rounded">
+                    </a>
                 </div>
             </div>
 
@@ -81,8 +104,13 @@
                         <h4 class="card-title">Bukti Pembayaran</h4>
                     </div>
                     <div class="card-body">
-                        <img src="{{ Storage::url($pemesanan->bukti_pembayaran) }}" alt="Bukti Pembayaran"
-                            class="img-fluid rounded">
+                        {{-- <img src="{{ Storage::url($pemesanan->bukti_pembayaran) }}" alt="Bukti Pembayaran"
+                            class="img-fluid rounded"> --}}
+                        <a href="{{ Storage::url($pemesanan->bukti_pembayaran) }}" data-lightbox="image-bukti"
+                            data-title="Bukti Pembayaran">
+                            <img src="{{ Storage::url($pemesanan->bukti_pembayaran) }}" alt="Bukti Pembayaran"
+                                class="img-fluid rounded">
+                        </a>
                     </div>
                 </div>
             @endif
@@ -204,9 +232,53 @@
             <div class="card-body">
                 <form action="{{ route('pemesanan.update-status', $pemesanan) }}" method="POST">
                     @csrf
+                    <div class="form-group">
+                        <label class="form-label">Catatan Pengerjaan</label>
+                        <textarea name="catatan_pengerjaan" id="catatan_pengerjaan" rows="5" class="form-control"></textarea>
+                        <small class="fst-italic text-muted">Isi jika ada catatan tambahan</small>
+                    </div>
                     <button type="submit" name="status" value="selesai" class="btn btn-success">Selesai</button>
                 </form>
             </div>
         </div>
+        {{-- <div class="card mt-4">
+            <div class="card-header">
+                <h4 class="card-title">Surat Jalan</h4>
+            </div>
+            <div class="card-body">
+                <a href="{{ route('pemesanan.download-surat-jalan', $pemesanan->id) }}" title="Download Surat Jalan"
+                    class="btn btn-sm btn-danger">
+                    <i class="fas fa-file-pdf"></i> Surat Jalan
+                </a>
+            </div>
+        </div> --}}
     @endif
 @endsection
+
+@push('scripts')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js"></script>
+    {{-- <script>
+        $(document).ready(function() {
+            $('#alamat_lokasi').on('input', function() {
+                var text = $(this).val();
+                if (text.length > 0) {
+                    $(this).removeClass('is-invalid');
+                } else {
+                    $(this).addClass('is-invalid');
+                }
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#catatan_pengerjaan').on('input', function() {
+                var text = $(this).val();
+                if (text.length > 0) {
+                    $(this).removeClass('is-invalid');
+                } else {
+                    $(this).addClass('is-invalid');
+                }
+            });
+        });
+    </script> --}}
+@endpush
