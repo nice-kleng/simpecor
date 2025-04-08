@@ -16,6 +16,6 @@ class KategoriCor extends Model
 
     public function komposisi()
     {
-        return $this->hasMany(Komposisi::class);
+        return $this->hasMany(Komposisi::class, 'kategori_cor_id');
     }
 }

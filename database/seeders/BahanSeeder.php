@@ -13,22 +13,26 @@ class BahanSeeder extends Seeder
             [
                 'nama_bahan' => 'Pasir Silika',
                 'satuan' => 'kg',
-                'stok' => 500000
+                'stok' => 500000,
+                'batas_stok' => 10000
             ],
             [
                 'nama_bahan' => 'Air',
                 'satuan' => 'liter',
-                'stok' => 100000
+                'stok' => 100000,
+                'batas_stok' => 10000
             ],
             [
                 'nama_bahan' => 'Semen',
                 'satuan' => 'kg',
-                'stok' => 100000
+                'stok' => 100000,
+                'batas_stok' => 10000
             ],
             [
                 'nama_bahan' => 'Kerikil',
                 'satuan' => 'kg',
-                'stok' => 100000
+                'stok' => 100000,
+                'batas_stok' => 10000
             ],
         ];
 

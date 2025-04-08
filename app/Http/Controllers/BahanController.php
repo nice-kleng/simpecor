@@ -33,7 +33,8 @@ class BahanController extends Controller
             'nama_bahan' => 'required',
             'stok' => 'required|integer',
             'satuan' => 'required',
-            'harga' => 'required|integer',
+            // 'harga' => 'required|integer',
+            'batas_stok' => 'required|integer',
         ]);
 
         Bahan::create($request->all());
@@ -65,7 +66,8 @@ class BahanController extends Controller
             'nama_bahan' => 'required',
             'stok' => 'required|integer',
             'satuan' => 'required',
-            'harga' => 'required|integer',
+            // 'harga' => 'required|integer',
+            'batas_stok' => 'required|integer',
         ]);
 
         $bahan->update($request->all());

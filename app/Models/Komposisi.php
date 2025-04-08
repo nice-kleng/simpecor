@@ -11,11 +11,11 @@ class Komposisi extends Model
 
     public function kategoriCor()
     {
-        return $this->belongsTo(KategoriCor::class);
+        return $this->belongsTo(KategoriCor::class, 'kategori_cor_id');
     }
 
     public function bahanBaku()
     {
-        return $this->belongsTo(Bahan::class);
+        return $this->belongsTo(Bahan::class, 'bahan_baku_id');
     }
 }

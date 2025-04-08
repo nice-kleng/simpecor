@@ -18,7 +18,7 @@
                                     <th>Nama Bahan Baku</th>
                                     <th>Stok</th>
                                     <th>Satuan</th>
-                                    {{-- <th>Harga</th> --}}
+                                    <th>Batas Stok</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -29,7 +29,7 @@
                                         <td>{{ $bahan->nama_bahan }}</td>
                                         <td>{{ $bahan->stok }}</td>
                                         <td>{{ $bahan->satuan }}</td>
-                                        {{-- <td>{{ $bahan->harga }}</td> --}}
+                                        <td>{{ $bahan->batas_stok }}</td>
                                         <td>
                                             <a href="javascript:void(0)" data-id="{{ $bahan->id }}"
                                                 class="btn btn-warning btn-sm btn-edit"><i class="fas fa-edit"></i></a>
@@ -75,10 +75,10 @@
                             <label for="satuan" class="form-label">Satuan</label>
                             <input type="text" class="form-control" id="satuan" name="satuan" required>
                         </div>
-                        {{-- <div class="mb-3">
-                            <label for="harga" class="form-label">Harga</label>
-                            <input type="number" class="form-control" id="harga" name="harga" required>
-                        </div> --}}
+                        <div class="mb-3">
+                            <label for="batas_stok" class="form-label">Batas Stok</label>
+                            <input type="number" class="form-control" id="batas_stok" name="batas_stok" required>
+                        </div>
                         <button type="submit" class="btn btn-primary">Simpan</button>
                     </form>
                 </div>
@@ -103,6 +103,8 @@
                 $('#method').html('');
                 $('.invalid-feedback').hide();
                 $('.is-invalid').removeClass('is-invalid');
+                modal.find('.modal-title').text('Tambah Bahan Baku');
+                form.find('[name="stok"]').prop('readonly', false);
             });
 
             // Edit button handler
@@ -117,7 +119,8 @@
 
                     // Fill form data
                     form.find('[name="nama_bahan"]').val(data.nama_bahan);
-                    form.find('[name="stok"]').val(data.stok);
+                    form.find('[name="stok"]').val(data.stok).prop('readonly', true);
+                    form.find('[name="batas_stok"]').val(data.batas_stok);
                     form.find('[name="satuan"]').val(data.satuan);
                     // form.find('[name="harga"]').val(data.harga);
 

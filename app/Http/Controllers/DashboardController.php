@@ -37,7 +37,9 @@ class DashboardController extends Controller
                 'pemesanan_proses' => Pemesanan::where('status_pengerjaan', 'proses_pengerjaan')->count(),
                 'total_bahan' => Bahan::count(),
                 'total_barang_masuk' => BarangMasuk::count(),
-                'bahan_menipis' => Bahan::where('stok', '<=', 10)->get(),
+                'pengeluaran_bulan_ini' => BarangMasuk::whereMonth('tanggal', now()->month)
+                    ->sum('total'),
+                'bahan_menipis' => Bahan::where('stok', '<=', DB::raw('batas_stok'))->get(),
                 'pemesanan_terbaru' => Pemesanan::with(['mitra', 'kategoriCor'])
                     ->latest()
                     ->take(5)
