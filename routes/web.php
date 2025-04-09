@@ -48,6 +48,9 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('pemesanan/{pemesanan}/verify', [PemesananController::class, 'verify'])->name('pemesanan.verify');
         Route::post('pemesanan/{pemesanan}/verify-pembayaran', [PemesananController::class, 'verifyPembayaran'])->name('pemesanan.verify-pembayaran');
         Route::post('pemesanan/{pemesanan}/update-status', [PemesananController::class, 'updateStatus'])->name('pemesanan.update-status');
+
+        Route::get('history-pemesanan', [PemesananController::class, 'historyPemesanan'])->name('pemesanan.history');
+        Route::get('export-history', [PemesananController::class, 'exportHistoryPDF'])->name('pemesanan.export-history');
     });
 
     // Route untuk upload bukti pembayaran (khusus mitra)

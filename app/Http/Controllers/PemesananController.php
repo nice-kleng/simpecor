@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Pemesanan;
 use App\Models\KategoriCor;
+use App\Models\Mitra;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -145,6 +146,76 @@ class PemesananController extends Controller
         $pdf = Pdf::loadView('pemesanan.surat-jalan', compact('pemesanan'));
         $pdf->setPaper('A4', 'portrait');
         $filename = 'surat_jalan_' . $pemesanan->id . '_' . date('Ymd') . '.pdf';
+        return $pdf->stream($filename);
+    }
+
+    public function historyPemesanan(Request $request)
+    {
+        $mitras = Mitra::orderBy('nama_mitra', 'asc')->get();
+        $kategoriCors = KategoriCor::orderBy('nama_kategori', 'asc')->get();
+
+        $query = Pemesanan::with(['mitra', 'kategoriCor'])
+            ->where('status_pengerjaan', 'selesai');
+
+        // Filter berdasarkan mitra
+        if ($request->filled('mitra')) {
+            $query->where('mitra_id', $request->mitra);
+        }
+
+        // Filter berdasarkan kategori cor
+        if ($request->filled('kategoriCor')) {
+            $query->where('kategori_cor_id', $request->kategoriCor);
+        }
+
+        // Filter berdasarkan rentang tanggal
+        if ($request->filled('tanggal_awal') && $request->filled('tanggal_akhir')) {
+            $query->whereBetween('created_at', [$request->tanggal_awal, $request->tanggal_akhir]);
+        }
+
+        $data = $query->latest()->get();
+
+        return view('pemesanan.history-pemesanan', compact(['data', 'mitras', 'kategoriCors']));
+    }
+
+    public function exportHistoryPDF(Request $request)
+    {
+        $query = Pemesanan::with(['mitra', 'kategoriCor'])
+            ->where('status_pengerjaan', 'selesai');
+
+        // Filter berdasarkan mitra
+        if ($request->filled('mitra')) {
+            $query->where('mitra_id', $request->mitra);
+        }
+
+        if ($request->filled('kategoriCor')) {
+            $query->where('kategori_cor_id', $request->kategoriCor);
+        }
+
+        if ($request->filled('tanggal_awal') && $request->filled('tanggal_akhir')) {
+            $query->whereBetween('created_at', [$request->tanggal_awal, $request->tanggal_akhir]);
+        }
+
+        $data = $query->latest()->get();
+
+        $filterInfo = [];
+        if ($request->filled('mitra')) {
+            $mitra = Mitra::find($request->mitra);
+            $filterInfo[] = 'Mitra: ' . ($mitra ? $mitra->nama_mitra : 'Unknown');
+        }
+
+        if ($request->filled('kategoriCor')) {
+            $kategori = KategoriCor::find($request->kategoriCor);
+            $filterInfo[] = 'Kategori: ' . ($kategori ? $kategori->nama_kategori : 'Unknown');
+        }
+
+        if ($request->filled('tanggal_awal') && $request->filled('tanggal_akhir')) {
+            $filterInfo[] = 'Periode: ' . $request->tanggal_awal . ' sampai ' . $request->tanggal_akhir;
+        }
+
+        $pdf = PDF::loadView('pemesanan.export-history-pdf', compact('data', 'filterInfo'));
+        $pdf->setPaper('A4', 'landscape');
+        $filename = 'history_pemesanan_' . date('YmdHis') . '.pdf';
+
         return $pdf->stream($filename);
     }
 }

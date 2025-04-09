@@ -1,6 +1,4 @@
-@extends('layouts.app')
-
-@section('title', 'Detail Pemesanan')
+@extends('layouts.app', ['title' => 'Detail Pemesanan', 'pageDescrition' => 'Detail Pemesanan'])
 
 @push('styles')
     <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css" rel="stylesheet">
