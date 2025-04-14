@@ -21,7 +21,7 @@ class KomposisiController extends Controller
         $request->validate([
             'kategori_id' => 'required|exists:kategori_cors,id',
             'bahan_baku' => 'required|exists:bahans,id',
-            'jumlah' => 'required|numeric|min:1',
+            'jumlah' => 'required|numeric',
         ]);
 
         $kategori = KategoriCor::find($request->kategori_id);

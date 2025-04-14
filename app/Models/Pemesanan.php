@@ -25,7 +25,8 @@ class Pemesanan extends Model
         'bukti_pembayaran',
         'status_pembayaran',
         'status_pengerjaan',
-        'keterangan_pembayaran'
+        'keterangan_pembayaran',
+        'pj_lapangan'
     ];
 
     public function mitra()

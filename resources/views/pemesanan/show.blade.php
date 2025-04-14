@@ -19,6 +19,10 @@
                                 <td>{{ $pemesanan->mitra->nama_mitra }}</td>
                             </tr>
                             <tr>
+                                <th>Alamat Lokasi</th>
+                                <td>{{ $pemesanan->alamat_lokasi }} m³</td>
+                            </tr>
+                            <tr>
                                 <th>Kategori Cor</th>
                                 <td>{{ $pemesanan->kategoriCor->nama_kategori }}</td>
                             </tr>
@@ -46,6 +50,10 @@
                                 <tr>
                                     <th>Jumlah Petugas</th>
                                     <td>{{ $pemesanan->jumlah_petugas }} Orang</td>
+                                </tr>
+                                <tr>
+                                    <th>Penanggung Jawab Lapangan</th>
+                                    <td>{{ $pemesanan->pj_lapangan }} Orang</td>
                                 </tr>
                             @endif
                             <tr>
@@ -124,20 +132,26 @@
                 <form action="{{ route('pemesanan.verify', $pemesanan) }}" method="POST">
                     @csrf
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label>Harga</label>
                                 <input type="number" name="harga" class="form-control"
                                     value="{{ $pemesanan->getHarga() }}" required>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Penganggung Jawab Lapangan</label>
+                                <input type="number" name="pj_lapangan" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label>Jumlah Unit Cor</label>
                                 <input type="number" name="jumlah_unit_cor" class="form-control" required>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label>Jumlah Petugas</label>
                                 <input type="number" name="jumlah_petugas" class="form-control" required>

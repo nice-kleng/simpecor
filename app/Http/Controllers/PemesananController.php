@@ -64,6 +64,7 @@ class PemesananController extends Controller
     {
         $validated = $request->validate([
             'harga' => 'required|numeric',
+            'pj_lapangan' => 'required',
             'jumlah_unit_cor' => 'required|numeric',
             'jumlah_petugas' => 'required|numeric',
         ]);
@@ -71,6 +72,7 @@ class PemesananController extends Controller
         $pemesanan->update([
             'status_pengerjaan' => 'disetujui',
             'harga' => $validated['harga'],
+            'pj_lapangan' => $validated['pj_lapangan'],
             'jumlah_unit_cor' => $validated['jumlah_unit_cor'],
             'jumlah_petugas' => $validated['jumlah_petugas'],
         ]);

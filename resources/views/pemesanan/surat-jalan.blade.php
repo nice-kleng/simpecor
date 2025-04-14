@@ -282,15 +282,16 @@
         <!-- Bagian tanda tangan yang diperbaiki -->
         <div class="signatures-container">
             <div class="signatures">
-                <div class="signature-box">
+                {{-- <div class="signature-box">
                     <div class="signature-line"></div>
                     <div class="signature-name">Pengirim</div>
                     <div class="signature-position">PT. Jasa Pengecoran</div>
-                </div>
+                </div> --}}
                 <div class="signature-box">
                     <div class="signature-line"></div>
                     <div class="signature-name">Koordinator Lapangan</div>
-                    <div class="signature-position">PT. Jasa Pengecoran</div>
+                    <div class="signature-position">{{ Str::upper($pemesanan->pj_lapangan ?? 'Koordinator Lapangan') }}
+                    </div>
                 </div>
                 <div class="signature-box">
                     <div class="signature-line"></div>
