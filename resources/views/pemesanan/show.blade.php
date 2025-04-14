@@ -142,7 +142,7 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label>Penganggung Jawab Lapangan</label>
-                                <input type="number" name="pj_lapangan" class="form-control" required>
+                                <input type="text" name="pj_lapangan" class="form-control" required>
                             </div>
                         </div>
                         <div class="col-md-3">
