@@ -4,7 +4,7 @@
     <div class="container-fluid">
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Tambah Barang Masuk</h3>
+                <h3 class="card-title">Update Barang Masuk</h3>
                 <div class="card-tools">
                     <a href="{{ route('barang-masuk.index') }}" class="btn btn-secondary">
                         Kembali
@@ -12,8 +12,9 @@
                 </div>
             </div>
             <div class="card-body">
-                <form action="{{ route('barang-masuk.store') }}" method="POST">
+                <form action="{{ route('barang-masuk.update', $data->id) }}" method="POST">
                     @csrf
+                    @method('put')
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
@@ -22,7 +23,8 @@
                                     class="form-control @error('bahan_id') is-invalid @enderror" required>
                                     <option value="">Pilih Bahan</option>
                                     @foreach ($bahans as $bahan)
-                                        <option value="{{ $bahan->id }}">{{ $bahan->nama_bahan . " ($bahan->satuan)" }}
+                                        <option value="{{ $bahan->id }}"
+                                            {{ $bahan->id === $data->bahan_id ? 'selected' : '' }}>{{ $bahan->nama_bahan }}
                                         </option>
                                     @endforeach
                                 </select>
@@ -38,7 +40,9 @@
                                     class="form-control @error('supplier_id') is-invalid @enderror" required>
                                     <option value="">Pilih Supplier</option>
                                     @foreach ($suppliers as $supplier)
-                                        <option value="{{ $supplier->id }}">{{ $supplier->nama_supplier }}</option>
+                                        <option value="{{ $supplier->id }}"
+                                            {{ $supplier->id === $data->supplier_id ? 'selected' : '' }}>
+                                            {{ $supplier->nama_supplier }}</option>
                                     @endforeach
                                 </select>
                                 @error('supplier_id')
@@ -53,7 +57,8 @@
                             <div class="form-group">
                                 <label for="jumlah">Jumlah</label>
                                 <input type="number" name="jumlah" id="jumlah"
-                                    class="form-control @error('jumlah') is-invalid @enderror" required min="1"
+                                    class="form-control @error('jumlah') is-invalid @enderror"
+                                    value="{{ old('jumlah', $data->jumlah) }}" required min="1"
                                     onchange="hitungTotal()">
                                 @error('jumlah')
                                     <span class="invalid-feedback">{{ $message }}</span>
@@ -64,7 +69,8 @@
                             <div class="form-group">
                                 <label for="harga">Harga Satuan</label>
                                 <input type="number" name="harga" id="harga"
-                                    class="form-control @error('harga') is-invalid @enderror" required min="0"
+                                    class="form-control @error('harga') is-invalid @enderror"
+                                    value="{{ old('harga', $data->harga) }}" required min="0"
                                     onchange="hitungTotal()">
                                 @error('harga')
                                     <span class="invalid-feedback">{{ $message }}</span>
@@ -74,7 +80,8 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="total">Total</label>
-                                <input type="text" id="total" class="form-control" readonly>
+                                <input type="text" id="total" class="form-control" value="{{ $data->total }}"
+                                    readonly>
                             </div>
                         </div>
                     </div>
@@ -85,7 +92,7 @@
                                 <label for="tanggal">Tanggal</label>
                                 <input type="date" name="tanggal" id="tanggal"
                                     class="form-control @error('tanggal') is-invalid @enderror" required
-                                    value="{{ date('Y-m-d') }}">
+                                    value="{{ old('tanggal', $data->tanggal) }}">
                                 @error('tanggal')
                                     <span class="invalid-feedback">{{ $message }}</span>
                                 @enderror
@@ -95,7 +102,7 @@
                             <div class="form-group">
                                 <label for="keterangan">Keterangan</label>
                                 <textarea name="keterangan" id="keterangan" class="form-control @error('keterangan') is-invalid @enderror"
-                                    rows="3"></textarea>
+                                    rows="3">{{ old('keterangan', $data->keterangan) }}</textarea>
                                 @error('keterangan')
                                     <span class="invalid-feedback">{{ $message }}</span>
                                 @enderror
@@ -104,7 +111,7 @@
                     </div>
 
                     <div class="text-right">
-                        <button type="submit" class="btn btn-primary">Simpan</button>
+                        <button type="submit" class="btn btn-primary">Update</button>
                     </div>
                 </form>
             </div>
