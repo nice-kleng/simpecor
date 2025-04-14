@@ -88,7 +88,7 @@ class BarangMasukController extends Controller
             $bahan->save();
 
             $total = $request->jumlah * $request->harga;
-            $test = $barangMasuk->update([
+            $barangMasuk->update([
                 'bahan_id' => $request->bahan_id,
                 'supplier_id' => $request->supplier_id,
                 'jumlah' => $request->jumlah,

@@ -54,7 +54,7 @@ class DashboardController extends Controller
 
             // Hitung total pembayaran mitra
             $total_pembayaran = Pemesanan::where('mitra_id', $mitraId)
-                ->where('status_pembayaran', 'lunas')
+                ->where('status_pembayaran', 'valid')
                 ->sum('harga');
 
             // Data untuk grafik mitra - 6 bulan terakhir
