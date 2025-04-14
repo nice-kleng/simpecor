@@ -20,7 +20,7 @@
                             </tr>
                             <tr>
                                 <th>Alamat Lokasi</th>
-                                <td>{{ $pemesanan->alamat_lokasi }} m³</td>
+                                <td>{{ $pemesanan->alamat_lokasi }}</td>
                             </tr>
                             <tr>
                                 <th>Kategori Cor</th>

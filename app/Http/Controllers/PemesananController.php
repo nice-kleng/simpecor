@@ -49,7 +49,8 @@ class PemesananController extends Controller
             'luas_cor' => $validated['luas_cor'],
             'volume_cor' => $validated['volume_cor'],
             'foto_lokasi' => $foto_lokasi,
-            'tanggal_pengecoran' => $validated['tanggal_pengecoran']
+            'tanggal_pengecoran' => $validated['tanggal_pengecoran'],
+            'alamat_lokasi' => $request->alamat_lokasi,
         ]);
 
         return redirect()->route('pemesanan.show', $pemesanan)->with('success', 'Pemesanan berhasil dibuat');
