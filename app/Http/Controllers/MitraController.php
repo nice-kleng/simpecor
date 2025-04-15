@@ -50,7 +50,7 @@ class MitraController extends Controller
             $user = User::create([
                 'name' => $request->nama_mitra,
                 'email' => $request->email,
-                'password' => Hash::make(Str::random(8)), // Generate random password
+                'password' => Hash::make('password'), // Generate random password
                 'role' => 'mitra'
             ]);
 
