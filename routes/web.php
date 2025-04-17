@@ -9,6 +9,7 @@ use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\BarangMasukController;
 use App\Http\Controllers\KomposisiController;
 use App\Http\Controllers\PemesananController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => 'guest'], function () {
@@ -21,13 +22,14 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/logout', [AuthenticateController::class, 'logout'])->name('logout');
 
     // Routes khusus admin
-    Route::middleware(['checkRole:admin'])->group(function () {
+    Route::middleware(['checkRole:admin,direktur'])->group(function () {
         Route::resources([
             'supplier' => SupplierController::class,
             'mitra' => MitraController::class,
             'bahan' => BahanController::class,
             'kategori' => KategoriCorController::class,
             'barang-masuk' => BarangMasukController::class,
+            'user' => UserController::class,
         ]);
 
         Route::controller(KomposisiController::class)->group(function () {
@@ -44,7 +46,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     // Routes untuk pemesanan (bisa diakses admin dan mitra)
     Route::resource('pemesanan', PemesananController::class);
-    Route::middleware(['checkRole:admin'])->group(function () {
+    Route::middleware(['checkRole:admin,direktur'])->group(function () {
         Route::post('pemesanan/{pemesanan}/verify', [PemesananController::class, 'verify'])->name('pemesanan.verify');
         Route::post('pemesanan/{pemesanan}/verify-pembayaran', [PemesananController::class, 'verifyPembayaran'])->name('pemesanan.verify-pembayaran');
         Route::post('pemesanan/{pemesanan}/update-status', [PemesananController::class, 'updateStatus'])->name('pemesanan.update-status');

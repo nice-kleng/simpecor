@@ -75,7 +75,7 @@
                             </a>
                         </li>
 
-                        @if (auth()->user()->role === 'admin')
+                        @if (auth()->user()->role === 'admin' || auth()->user()->role === 'direktur')
                             <li class="nav-item">
                                 <a data-bs-toggle="collapse" href="#masterdt">
                                     <i class="fas fa-database"></i>
@@ -107,6 +107,12 @@
                                     </ul>
                                 </div>
                             </li>
+                            <li class="nav-item {{ request()->is('user') ? 'active' : '' }}">
+                                <a href="{{ route('user.index') }}">
+                                    <i class="fas fa-users"></i>
+                                    <p>User</p>
+                                </a>
+                            </li>
                         @endif
 
                         <li class="nav-item">
@@ -117,7 +123,7 @@
                             </a>
                             <div class="collapse" id="transaksi">
                                 <ul class="nav nav-collapse">
-                                    @if (auth()->user()->role === 'admin')
+                                    @if (auth()->user()->role === 'admin' || auth()->user()->role === 'direktur')
                                         <li class="{{ request()->routeIs('barang-masuk.*') ? 'active' : '' }}">
                                             <a href="{{ route('barang-masuk.index') }}">
                                                 <span class="sub-item">Barang Masuk</span>

@@ -2,11 +2,13 @@
 
 @section('title', 'Daftar Pemesanan')
 
-@section('action-button')
-    <a href="{{ route('pemesanan.create') }}" class="btn btn-primary btn-round">
-        <i class="fas fa-plus"></i> Buat Pemesanan
-    </a>
-@endsection
+@if (auth()->user()->role === 'mitra')
+    @section('action-button')
+        <a href="{{ route('pemesanan.create') }}" class="btn btn-primary btn-round">
+            <i class="fas fa-plus"></i> Buat Pemesanan
+        </a>
+    @endsection
+@endif
 
 @section('content')
     <div class="card">

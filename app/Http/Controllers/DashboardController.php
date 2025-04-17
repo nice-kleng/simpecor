@@ -13,7 +13,7 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        if (auth()->user()->role === 'admin') {
+        if (auth()->user()->role === 'admin' || auth()->user()->role === 'direktur') {
             // Hitung pendapatan bulan ini
             $pendapatan_bulan_ini = Pemesanan::whereMonth('created_at', now()->month)
                 ->where('status_pembayaran', 'valid')
