@@ -36,7 +36,7 @@
                                         <td>{{ \Carbon\Carbon::parse($item->created_at)->locale('id')->isoFormat('DD MMMM YYYY') }}
                                         </td>
                                         <td>
-                                            {{ number_format($item->harga, 0, ',', '.') }}
+                                            Rp. {{ number_format($item->harga, 0, ',', '.') }}
                                         </td>
                                         <td>
                                             {{ \Carbon\Carbon::parse($item->tanggal_selesai)->locale('id')->isoFormat('DD MMMM YYYY') }}
