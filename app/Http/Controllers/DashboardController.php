@@ -19,6 +19,10 @@ class DashboardController extends Controller
                 ->where('status_pembayaran', 'valid')
                 ->sum('harga');
 
+            $tagihan_bulan_ini = Pemesanan::whereMonth('created_at', now()->month)
+                ->where('status_pembayaran', 'inavlid')
+                ->sum('harga');
+
             // Data untuk grafik admin - 6 bulan terakhir
             $chart_data = collect();
             $chart_labels = collect();
@@ -45,6 +49,7 @@ class DashboardController extends Controller
                     ->take(5)
                     ->get(),
                 'pendapatan_bulan_ini' => $pendapatan_bulan_ini,
+                'tagihan_bulan_ini' => $tagihan_bulan_ini,
                 'chart_labels' => $chart_labels,
                 'chart_data' => $chart_data,
             ];
