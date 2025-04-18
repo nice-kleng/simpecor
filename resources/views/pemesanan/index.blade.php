@@ -35,7 +35,7 @@
                                 <td>{{ $pemesanan->kategoriCor->nama_kategori }}</td>
                                 <td>{{ $pemesanan->tanggal_pengecoran }}</td>
                                 <td>
-                                    {{ number_format($pemesanan->harga, 0, ',', '.') }}
+                                    Rp. {{ number_format($pemesanan->harga, 0, ',', '.') }}
                                 </td>
                                 <td>
                                     <span
