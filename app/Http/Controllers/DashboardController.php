@@ -20,7 +20,7 @@ class DashboardController extends Controller
                 ->sum('harga');
 
             $tagihan_bulan_ini = Pemesanan::whereMonth('created_at', now()->month)
-                ->where('status_pembayaran', 'inavlid')
+                ->where('status_pembayaran', 'invalid')
                 ->sum('harga');
 
             // Data untuk grafik admin - 6 bulan terakhir
