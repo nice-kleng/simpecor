@@ -14,13 +14,14 @@
     <div class="card">
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-hover datatable">
+                <table class="table table-hover text-nowrap datatable">
                     <thead>
                         <tr>
                             <th>No</th>
                             <th>Mitra</th>
                             <th>Kategori</th>
                             <th>Tanggal Pengecoran</th>
+                            <th>Harga</th>
                             <th>Status Pembayaran</th>
                             <th>Status Pengerjaan</th>
                             <th>Aksi</th>
@@ -33,6 +34,9 @@
                                 <td>{{ $pemesanan->mitra->nama_mitra }}</td>
                                 <td>{{ $pemesanan->kategoriCor->nama_kategori }}</td>
                                 <td>{{ $pemesanan->tanggal_pengecoran }}</td>
+                                <td>
+                                    {{ number_format($pemesanan->harga, 0, ',', '.') }}
+                                </td>
                                 <td>
                                     <span
                                         class="badge bg-{{ $pemesanan->status_pembayaran == 'valid' ? 'success' : ($pemesanan->status_pembayaran == 'invalid' ? 'danger' : 'warning') }}">

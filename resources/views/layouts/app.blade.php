@@ -110,6 +110,12 @@
                                     <p>User</p>
                                 </a>
                             </li>
+                            <li class="nav-item {{ request()->is('pemesanan.history') ? 'active' : '' }}">
+                                <a href="{{ route('pemesanan.history') }}">
+                                    <i class="fas fa-history"></i>
+                                    <p>History Pengerjaan</p>
+                                </a>
+                            </li>
                         @endif
 
                         <li class="nav-item">
@@ -134,13 +140,6 @@
                                     </li>
                                 </ul>
                             </div>
-                        </li>
-
-                        <li class="nav-item {{ request()->is('pemesanan.history') ? 'active' : '' }}">
-                            <a href="{{ route('pemesanan.history') }}">
-                                <i class="fas fa-history"></i>
-                                <p>History Pengerjaan</p>
-                            </a>
                         </li>
                     </ul>
                 </div>

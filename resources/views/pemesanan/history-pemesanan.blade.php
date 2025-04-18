@@ -21,6 +21,7 @@
                                     <th>Luas</th>
                                     <th>Volume Cor</th>
                                     <th>Tanggal Pemesanan</th>
+                                    <th>Harga</th>
                                     <th>Tanggal Selesai</th>
                                 </tr>
                             </thead>
@@ -33,6 +34,9 @@
                                         <td>{{ $item->luas_cor }} m²</td>
                                         <td>{{ $item->volume_cor }} m³</td>
                                         <td>{{ \Carbon\Carbon::parse($item->created_at)->locale('id')->isoFormat('DD MMMM YYYY') }}
+                                        </td>
+                                        <td>
+                                            {{ number_format($item->harga, 0, ',', '.') }}
                                         </td>
                                         <td>
                                             {{ \Carbon\Carbon::parse($item->tanggal_selesai)->locale('id')->isoFormat('DD MMMM YYYY') }}
