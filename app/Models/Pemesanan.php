@@ -22,7 +22,7 @@ class Pemesanan extends Model
         'harga',
         'jumlah_unit_cor',
         'jumlah_petugas',
-        'bukti_pembayaran',
+        'jenis_pembayaran',
         'status_pembayaran',
         'status_pengerjaan',
         'keterangan_pembayaran',
@@ -39,9 +39,25 @@ class Pemesanan extends Model
         return $this->belongsTo(KategoriCor::class);
     }
 
+    public function pembayaran()
+    {
+        return $this->hasMany(Pembayaran::class, 'pemesanans_id');
+    }
+
     public function getHarga()
     {
         $total = $this->kategoriCor->harga * $this->volume_cor;
         return $total;
+    }
+
+    public function getStatusPembayaranLabelAttribute()
+    {
+        $statuses = [
+            'angsur' => ['label' => 'Belum Bayar', 'class' => 'badge-warning'],
+            'unpaid' => ['label' => 'Belum Bayar', 'class' => 'badge-danger'],
+            'paid' => ['label' => 'Lunas', 'class' => 'badge-success'],
+        ];
+
+        return $statuses[$this->status] ?? ['label' => 'Unknown', 'class' => 'badge-secondary'];
     }
 }

@@ -19,8 +19,8 @@ return new class extends Migration
             $table->integer('harga')->nullable();
             $table->integer('jumlah_unit_cor')->nullable();
             $table->integer('jumlah_petugas')->nullable();
-            $table->string('bukti_pembayaran')->nullable();
-            $table->enum('status_pembayaran', ['pending', 'valid', 'invalid'])->default('pending');
+            $table->string('jenis_pembayaran')->nullable();
+            $table->string('status_pembayaran')->default('belum_dibayar');
             $table->enum('status_pengerjaan', ['menunggu_verifikasi', 'disetujui', 'ditolak', 'proses_pengerjaan', 'selesai'])->default('menunggu_verifikasi');
             $table->timestamps();
         });
