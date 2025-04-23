@@ -25,7 +25,7 @@ class Pemesanan extends Model
         'jenis_pembayaran',
         'status_pembayaran',
         'status_pengerjaan',
-        'keterangan_pembayaran',
+        // 'keterangan_pembayaran',
         'pj_lapangan'
     ];
 
@@ -41,7 +41,7 @@ class Pemesanan extends Model
 
     public function pembayaran()
     {
-        return $this->hasMany(Pembayaran::class, 'pemesanans_id');
+        return $this->hasMany(Pembayaran::class, 'pemesanan_id');
     }
 
     public function getHarga()

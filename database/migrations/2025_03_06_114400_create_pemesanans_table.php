@@ -20,7 +20,7 @@ return new class extends Migration
             $table->integer('jumlah_unit_cor')->nullable();
             $table->integer('jumlah_petugas')->nullable();
             $table->string('jenis_pembayaran')->nullable();
-            $table->string('status_pembayaran')->default('belum_dibayar');
+            $table->string('status_pembayaran')->default('unpaid');
             $table->enum('status_pengerjaan', ['menunggu_verifikasi', 'disetujui', 'ditolak', 'proses_pengerjaan', 'selesai'])->default('menunggu_verifikasi');
             $table->timestamps();
         });

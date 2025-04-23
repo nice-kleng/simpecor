@@ -82,7 +82,8 @@
                             @endif
                             <tr>
                                 <th>Tanggal Selesai</th>
-                                <td>{{ date('d F Y', strtotime($pemesanan->tanggal_selesai)) }}</td>
+                                <td>{{ $pemesanan->tanggal_selesai ? \Carbon\Carbon::parse($pemesanan->tanggal_selesai)->format('d M Y') : '-' }}
+                                </td>
                             </tr>
                         </table>
                     </div>
@@ -104,14 +105,12 @@
                 </div>
             </div>
 
-            @if ($pemesanan->bukti_pembayaran)
+            {{-- @if ($pemesanan->bukti_pembayaran)
                 <div class="card mt-3">
                     <div class="card-header">
                         <h4 class="card-title">Bukti Pembayaran</h4>
                     </div>
                     <div class="card-body">
-                        {{-- <img src="{{ Storage::url($pemesanan->bukti_pembayaran) }}" alt="Bukti Pembayaran"
-                            class="img-fluid rounded"> --}}
                         <a href="{{ Storage::url($pemesanan->bukti_pembayaran) }}" data-lightbox="image-bukti"
                             data-title="Bukti Pembayaran">
                             <img src="{{ Storage::url($pemesanan->bukti_pembayaran) }}" alt="Bukti Pembayaran"
@@ -119,7 +118,7 @@
                         </a>
                     </div>
                 </div>
-            @endif
+            @endif --}}
         </div>
     </div>
 
@@ -166,7 +165,10 @@
         </div>
     @endif
 
-    @if ($pemesanan->status_pengerjaan === 'disetujui' && !$pemesanan->bukti_pembayaran && auth()->user()->role === 'mitra')
+    @if (
+        $pemesanan->status_pengerjaan === 'disetujui' &&
+            auth()->user()->role === 'mitra' &&
+            $pemesanan->status_pembayaran !== 'paid')
         <div class="card mt-4">
             <div class="card-header">
                 <h4 class="card-title">Upload Bukti Pembayaran</h4>
@@ -175,6 +177,10 @@
                 <form action="{{ route('pemesanan.upload-bukti', $pemesanan) }}" method="POST"
                     enctype="multipart/form-data">
                     @csrf
+                    <div class="form-group">
+                        <label>Jumlah Pembayaran</label>
+                        <input type="number" name="jumlah_pembayaran" class="form-control" required>
+                    </div>
                     <div class="form-group">
                         <label>Bukti Pembayaran</label>
                         <input type="file" name="bukti_pembayaran" class="form-control" required>
@@ -208,7 +214,7 @@
         </div>
     @endif
 
-    @if ($pemesanan->status_pembayaran === 'invalid')
+    {{-- @if ($pemesanan->status_pembayaran === 'invalid')
         <div class="card mt-4">
             <div class="card-header">
                 <h4 class="card-title">Pembayaran Invalid</h4>
@@ -234,7 +240,7 @@
                 @endif
             </div>
         </div>
-    @endif
+    @endif --}}
 
     @if (auth()->user()->role === 'admin' && $pemesanan->status_pengerjaan === 'proses_pengerjaan')
         <div class="card mt-4">
@@ -265,11 +271,72 @@
             </div>
         </div> --}}
     @endif
-@endsection
 
-@push('scripts')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js"></script>
-    {{-- <script>
+    <div class="card mt-4">
+        <div class="card-header">
+            <h4 class="card-title">Riwayat Pembayaran</h4>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Tanggal Pembayaran</th>
+                            <th>Jumlah Pembayaran</th>
+                            <th>Status</th>
+                            <th>Bukti Pembayaran</th>
+                            <th>Keterangan</th>
+                            @if (auth()->user()->role === 'admin')
+                                <th>
+                                    Verifikasi
+                                </th>
+                            @endif
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($pemesanan->pembayaran as $riwayat)
+                            <tr>
+                                <td>
+                                    <a href="{{ Storage::url($riwayat->bukti_pembayaran) }}" data-lightbox="image-bukti"
+                                        data-title="Bukti Pembayaran">
+                                        {{ date('d F Y', strtotime($riwayat->created_at)) }}
+                                    </a>
+                                </td>
+                                <td>{{ date('d F Y', strtotime($riwayat->created_at)) }}</td>
+                                <td>Rp {{ number_format($riwayat->jumlah_pembayaran, 0, ',', '.') }}</td>
+                                <td>
+                                    <span
+                                        class="badge bg-{{ $riwayat->status == 'valid' ? 'success' : ($riwayat->status == 'invalid' ? 'danger' : 'warning') }}">
+                                        {{ ucfirst($riwayat->status) }}
+                                    </span>
+                                </td>
+                                @if (auth()->user()->role === 'admin')
+                                    <td>
+                                        @if ($riwayat->status == 'pending')
+                                            <form action="{{ route('pemesanan.verify-pembayaran', $riwayat) }}"
+                                                method="POST">
+                                                @csrf
+                                                <button type="submit" name="status" value="valid"
+                                                    class="btn btn-success btn-sm">Valid</button>
+                                                <button type="submit" name="status" value="invalid"
+                                                    class="btn btn-danger btn-sm">Invalid</button>
+                                            </form>
+                                        @else
+                                            -
+                                        @endif
+                                    </td>
+                                @endif
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    @endsection
+
+    @push('scripts')
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js"></script>
+        {{-- <script>
         $(document).ready(function() {
             $('#alamat_lokasi').on('input', function() {
                 var text = $(this).val();
@@ -293,4 +360,4 @@
             });
         });
     </script> --}}
-@endpush
+    @endpush

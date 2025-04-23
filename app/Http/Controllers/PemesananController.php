@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Pemesanan;
 use App\Models\KategoriCor;
 use App\Models\Mitra;
+use App\Models\Pembayaran;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -51,6 +52,7 @@ class PemesananController extends Controller
             'foto_lokasi' => $foto_lokasi,
             'tanggal_pengecoran' => $validated['tanggal_pengecoran'],
             'alamat_lokasi' => $request->alamat_lokasi,
+            'jenis_pembayaran' => $request->jenis_pembayaran,
         ]);
 
         return redirect()->route('pemesanan.show', $pemesanan)->with('success', 'Pemesanan berhasil dibuat');
@@ -97,40 +99,55 @@ class PemesananController extends Controller
         return redirect()->back()->with('success', 'Bukti pembayaran berhasil diupload');
     }
 
-    public function verifyPembayaran(Pemesanan $pemesanan, Request $request)
+    // public function verifyPembayaran(Pemesanan $pemesanan, Request $request)
+    // {
+    //     DB::beginTransaction();
+    //     try {
+    //         $status = $request->status;
+    //         $keterangan = $request->keterangan;
+
+    //         if ($status == 'valid') {
+    //             // Load komposisi dengan bahan baku
+    //             $komposisis = $pemesanan->kategoriCor->komposisi()->with('bahanBaku')->get();
+
+    //             foreach ($komposisis as $komposisi) {
+    //                 // Hitung total pengurangan: jumlah komposisi per m³ * volume cor
+    //                 $pengurangan = $komposisi->jumlah * $pemesanan->volume_cor;
+
+    //                 // Update stok bahan baku
+    //                 $komposisi->bahanBaku->update([
+    //                     'stok' => $komposisi->bahanBaku->stok - $pengurangan
+    //                 ]);
+    //             }
+    //         }
+
+    //         $pemesanan->update([
+    //             'status_pembayaran' => $status,
+    //             'status_pengerjaan' => $status == 'valid' ? 'proses_pengerjaan' : 'disetujui',
+    //             'keterangan_pembayaran' => $status == 'invalid' ? $keterangan : null
+    //         ]);
+
+    //         DB::commit();
+    //         return redirect()->back()->with('success', 'Status pembayaran berhasil diupdate');
+    //     } catch (\Throwable $th) {
+    //         DB::rollBack();
+    //         return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $th->getMessage());
+    //     }
+    // }
+
+    public function verifyPembayaran(Pembayaran $pembayaran, Request $request)
     {
-        DB::beginTransaction();
-        try {
-            $status = $request->status;
-            $keterangan = $request->keterangan;
+        $validated = $request->validate([
+            'status' => 'required|in:valid,invalid',
+            // 'keterangan' => 'nullable|string'
+        ]);
 
-            if ($status == 'valid') {
-                // Load komposisi dengan bahan baku
-                $komposisis = $pemesanan->kategoriCor->komposisi()->with('bahanBaku')->get();
+        $pembayaran->update([
+            'status_pembayaran' => $validated['status'],
+            // 'keterangan_pembayaran' => $validated['status'] == 'invalid' ? $validated['keterangan'] : null
+        ]);
 
-                foreach ($komposisis as $komposisi) {
-                    // Hitung total pengurangan: jumlah komposisi per m³ * volume cor
-                    $pengurangan = $komposisi->jumlah * $pemesanan->volume_cor;
-
-                    // Update stok bahan baku
-                    $komposisi->bahanBaku->update([
-                        'stok' => $komposisi->bahanBaku->stok - $pengurangan
-                    ]);
-                }
-            }
-
-            $pemesanan->update([
-                'status_pembayaran' => $status,
-                'status_pengerjaan' => $status == 'valid' ? 'proses_pengerjaan' : 'disetujui',
-                'keterangan_pembayaran' => $status == 'invalid' ? $keterangan : null
-            ]);
-
-            DB::commit();
-            return redirect()->back()->with('success', 'Status pembayaran berhasil diupdate');
-        } catch (\Throwable $th) {
-            DB::rollBack();
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $th->getMessage());
-        }
+        return redirect()->back()->with('success', 'Status pembayaran berhasil diupdate');
     }
 
     public function updateStatus(Pemesanan $pemesanan, Request $request)

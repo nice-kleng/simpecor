@@ -28,16 +28,26 @@
                 </div>
 
                 <div class="row mt-3">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label>Luas Cor (m²)</label>
                             <input type="number" step="0.01" name="luas_cor" class="form-control" required>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label>Volume Cor (m³)</label>
                             <input type="number" step="0.01" name="volume_cor" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Jenis Pembayaran</label>
+                            <select name="jenis_pembayaran" id="jenis_pembayaran" class="form-control" required>
+                                <option value="">-- Pilih Jenis Pembayaran --</option>
+                                <option value="Lunas">Lunas</option>
+                                <option value="DP">DP</option>
+                            </select>
                         </div>
                     </div>
                 </div>

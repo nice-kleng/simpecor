@@ -39,7 +39,7 @@
                                 </td>
                                 <td>
                                     <span
-                                        class="badge bg-{{ $pemesanan->status_pembayaran == 'valid' ? 'success' : ($pemesanan->status_pembayaran == 'invalid' ? 'danger' : 'warning') }}">
+                                        class="badge bg-{{ $pemesanan->status_pembayaran == 'unpaid' ? 'secondary' : ($pemesanan->status_pembayaran == 'paid' ? 'success' : 'warning') }}">
                                         {{ ucfirst($pemesanan->status_pembayaran) }}
                                     </span>
                                 </td>
