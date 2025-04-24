@@ -1,9 +1,12 @@
 @extends('layouts.app', ['title' => 'Kategori Cor', 'pageDescrition' => 'Management Kategori Cor'])
 
-@section('action-button')
-    <a href="javascript:void(0)" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalKategori">Tambah
-        Kategori</a>
-@endsection
+@if (auth()->user()->role == 'admin')
+    @section('action-button')
+        <a href="javascript:void(0)" class="btn btn-sm btn-primary" data-bs-toggle="modal"
+            data-bs-target="#modalKategori">Tambah
+            Kategori</a>
+    @endsection
+@endif
 
 @section('content')
     <div class="row">
@@ -18,6 +21,7 @@
                                     <th>Nama Kategori</th>
                                     <th>Slug</th>
                                     <th>Harga</th>
+                                    <th>Bahan Baku</th>
                                     <th>Deskripsi</th>
                                     <th>Aksi</th>
                                 </tr>
@@ -35,15 +39,17 @@
                                                 class="btn btn-info btn-sm" title="Detail Komposisi">Bahan Baku</a>
                                         </td>
                                         <td>
-                                            <a href="javascript:void(0)" data-id="{{ $kategori->id }}"
-                                                class="btn btn-warning btn-sm btn-edit"><i class="fas fa-edit"></i></a>
-                                            <form action="{{ route('kategori.destroy', $kategori->id) }}" method="POST"
-                                                class="d-inline">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger btn-sm btn-delete"><i
-                                                        class="fas fa-trash"></i></button>
-                                            </form>
+                                            @if (auth()->user()->role == 'admin')
+                                                <a href="javascript:void(0)" data-id="{{ $kategori->id }}"
+                                                    class="btn btn-warning btn-sm btn-edit"><i class="fas fa-edit"></i></a>
+                                                <form action="{{ route('kategori.destroy', $kategori->id) }}" method="POST"
+                                                    class="d-inline">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger btn-sm btn-delete"><i
+                                                            class="fas fa-trash"></i></button>
+                                                </form>
+                                            @endif
                                         </td>
                                     </tr>
                                 @endforeach

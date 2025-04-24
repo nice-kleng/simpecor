@@ -86,12 +86,25 @@ class PemesananController extends Controller
     public function uploadBuktiPembayaran(Pemesanan $pemesanan, Request $request)
     {
         $request->validate([
-            'bukti_pembayaran' => 'required|image'
+            'bukti_pembayaran' => 'required|image',
+            'jumlah_pembayaran' => 'required|numeric',
         ]);
 
         $bukti_pembayaran = $request->file('bukti_pembayaran')->store('bukti-pembayaran', 'public');
 
-        $pemesanan->update([
+        if ($this->cekLunas($pemesanan)) {
+            return redirect()->back()->with('warning', 'Pembayaran sudah lunas');
+        }
+
+        if ($pemesanan->pembayaran->count() > 0) {
+            $pemesanan->update([
+                'status_pembayaran' => 'angsur',
+            ]);
+        }
+
+        Pembayaran::create([
+            'pemesanan_id' => $pemesanan->id,
+            'jumlah_pembayaran' => $request->jumlah_pembayaran,
             'bukti_pembayaran' => $bukti_pembayaran,
             'status_pembayaran' => 'pending'
         ]);
@@ -99,55 +112,36 @@ class PemesananController extends Controller
         return redirect()->back()->with('success', 'Bukti pembayaran berhasil diupload');
     }
 
-    // public function verifyPembayaran(Pemesanan $pemesanan, Request $request)
-    // {
-    //     DB::beginTransaction();
-    //     try {
-    //         $status = $request->status;
-    //         $keterangan = $request->keterangan;
-
-    //         if ($status == 'valid') {
-    //             // Load komposisi dengan bahan baku
-    //             $komposisis = $pemesanan->kategoriCor->komposisi()->with('bahanBaku')->get();
-
-    //             foreach ($komposisis as $komposisi) {
-    //                 // Hitung total pengurangan: jumlah komposisi per m³ * volume cor
-    //                 $pengurangan = $komposisi->jumlah * $pemesanan->volume_cor;
-
-    //                 // Update stok bahan baku
-    //                 $komposisi->bahanBaku->update([
-    //                     'stok' => $komposisi->bahanBaku->stok - $pengurangan
-    //                 ]);
-    //             }
-    //         }
-
-    //         $pemesanan->update([
-    //             'status_pembayaran' => $status,
-    //             'status_pengerjaan' => $status == 'valid' ? 'proses_pengerjaan' : 'disetujui',
-    //             'keterangan_pembayaran' => $status == 'invalid' ? $keterangan : null
-    //         ]);
-
-    //         DB::commit();
-    //         return redirect()->back()->with('success', 'Status pembayaran berhasil diupdate');
-    //     } catch (\Throwable $th) {
-    //         DB::rollBack();
-    //         return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $th->getMessage());
-    //     }
-    // }
-
     public function verifyPembayaran(Pembayaran $pembayaran, Request $request)
     {
         $validated = $request->validate([
             'status' => 'required|in:valid,invalid',
-            // 'keterangan' => 'nullable|string'
+            'keterangan' => $request->status === 'invalid' ? 'required|string' : 'nullable|string'
         ]);
 
         $pembayaran->update([
-            'status_pembayaran' => $validated['status'],
-            // 'keterangan_pembayaran' => $validated['status'] == 'invalid' ? $validated['keterangan'] : null
+            'status' => $validated['status'],
+            'keterangan' => $validated['keterangan'],
         ]);
 
+        if ($validated['status'] === 'valid') {
+            $pemesanan = $pembayaran->pemesanan;
+            if ($this->cekLunas($pemesanan)) {
+                $pemesanan->update([
+                    'status_pembayaran' => 'paid'
+                ]);
+            }
+        }
+
         return redirect()->back()->with('success', 'Status pembayaran berhasil diupdate');
+    }
+
+    protected function cekLunas($pemesanan)
+    {
+        $totalPembayaran = $pemesanan->pembayaran()->where('status', 'valid')->sum('jumlah_pembayaran');
+        $totalHarga = $pemesanan->getHarga();
+
+        return $totalPembayaran >= $totalHarga;
     }
 
     public function updateStatus(Pemesanan $pemesanan, Request $request)

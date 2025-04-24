@@ -6,9 +6,11 @@
             <div class="card-header">
                 <h3 class="card-title">Data Barang Masuk</h3>
                 <div class="card-tools">
-                    <a href="{{ route('barang-masuk.create') }}" class="btn btn-primary">
-                        Tambah Barang Masuk
-                    </a>
+                    @if (auth()->user()->role == 'admin')
+                        <a href="{{ route('barang-masuk.create') }}" class="btn btn-primary">
+                            Tambah Barang Masuk
+                        </a>
+                    @endif
                 </div>
             </div>
             <div class="card-body">
@@ -26,7 +28,9 @@
                                 <th>Total</th>
                                 {{-- <th>Status</th> --}}
                                 <th>Keterangan</th>
-                                <th>Aksi</th>
+                                @if (auth()->user()->role == 'admin')
+                                    <th>Aksi</th>
+                                @endif
                             </tr>
                         </thead>
                         <tbody>
@@ -67,21 +71,23 @@
                                             </form>
                                         @endif
                                     </td> --}}
-                                    <td>
-                                        <a href="{{ route('barang-masuk.edit', $item->id) }}"
-                                            class="btn btn-warning btn-sm">
-                                            <i class="fas fa-edit"></i>
-                                        </a>
-                                        <form action="{{ route('barang-masuk.destroy', $item->id) }}" method="POST"
-                                            class="d-inline">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm"
-                                                onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </form>
-                                    </td>
+                                    @if (auth()->user()->role == 'admin')
+                                        <td>
+                                            <a href="{{ route('barang-masuk.edit', $item->id) }}"
+                                                class="btn btn-warning btn-sm">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <form action="{{ route('barang-masuk.destroy', $item->id) }}" method="POST"
+                                                class="d-inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger btn-sm"
+                                                    onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    @endif
                                 </tr>
                             @endforeach
                         </tbody>

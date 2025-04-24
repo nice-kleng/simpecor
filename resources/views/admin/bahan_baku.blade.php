@@ -1,9 +1,11 @@
 @extends('layouts.app', ['title' => 'Bahan Baku', 'pageDescrition' => 'Management Bahan Baku'])
 
-@section('action-button')
-    <a href="javascript:void(0)" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalBahan">Tambah
-        Bahan Baku</a>
-@endsection
+@if (auth()->user()->role == 'admin')
+    @section('action-button')
+        <a href="javascript:void(0)" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalBahan">Tambah
+            Bahan Baku</a>
+    @endsection
+@endif
 
 @section('content')
     <div class="row">
@@ -31,15 +33,17 @@
                                         <td>{{ $bahan->satuan }}</td>
                                         <td>{{ $bahan->batas_stok }}</td>
                                         <td>
-                                            <a href="javascript:void(0)" data-id="{{ $bahan->id }}"
-                                                class="btn btn-warning btn-sm btn-edit"><i class="fas fa-edit"></i></a>
-                                            <form action="{{ route('bahan.destroy', $bahan->id) }}" method="POST"
-                                                class="d-inline">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger btn-sm btn-delete"><i
-                                                        class="fas fa-trash"></i></button>
-                                            </form>
+                                            @if (auth()->user()->role == 'admin')
+                                                <a href="javascript:void(0)" data-id="{{ $bahan->id }}"
+                                                    class="btn btn-warning btn-sm btn-edit"><i class="fas fa-edit"></i></a>
+                                                <form action="{{ route('bahan.destroy', $bahan->id) }}" method="POST"
+                                                    class="d-inline">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger btn-sm btn-delete"><i
+                                                            class="fas fa-trash"></i></button>
+                                                </form>
+                                            @endif
                                         </td>
                                     </tr>
                                 @endforeach

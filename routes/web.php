@@ -48,7 +48,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('pemesanan', PemesananController::class);
     Route::middleware(['checkRole:admin,direktur'])->group(function () {
         Route::post('pemesanan/{pemesanan}/verify', [PemesananController::class, 'verify'])->name('pemesanan.verify');
-        Route::post('pemesanan/{pemesanan}/verify-pembayaran', [PemesananController::class, 'verifyPembayaran'])->name('pemesanan.verify-pembayaran');
+        Route::post('pemesanan/{pembayaran}/verify-pembayaran', [PemesananController::class, 'verifyPembayaran'])->name('pemesanan.verify-pembayaran');
         Route::post('pemesanan/{pemesanan}/update-status', [PemesananController::class, 'updateStatus'])->name('pemesanan.update-status');
 
         Route::get('history-pemesanan', [PemesananController::class, 'historyPemesanan'])->name('pemesanan.history');

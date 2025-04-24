@@ -1,8 +1,11 @@
 @extends('layouts.app', ['title' => 'Komposisi Cor', 'pageDescrition' => 'Kompisi Cor Type ' . $kategori->nama_kategori . ' untuk setiap m³'])
 
 @section('action-button')
-    <a href="javascript:void(0)" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalKomposisi">Tambah
-        Bahan</a>
+    @if (auth()->user()->role == 'admin')
+        <a href="javascript:void(0)" class="btn btn-sm btn-primary" data-bs-toggle="modal"
+            data-bs-target="#modalKomposisi">Tambah
+            Bahan</a>
+    @endif
     <a href="{{ route('kategori.index') }}" class="btn btn-sm btn-secondary" title="Kembali">Kembali</a>
 @endsection
 
@@ -31,15 +34,17 @@
                                         <td>{{ $komposisi->bahanBaku->satuan }}</td>
                                         <td>{{ $komposisi->jumlah }}</td>
                                         <td>
-                                            <a href="javascript:void(0)" data-id="{{ $komposisi->id }}"
-                                                class="btn btn-warning btn-sm btn-edit"><i class="fas fa-edit"></i></a>
-                                            <form action="{{ route('komposisi.destroy', $komposisi->id) }}" method="POST"
-                                                class="d-inline" id="deleteForm">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger btn-sm btn-delete"><i
-                                                        class="fas fa-trash"></i></button>
-                                            </form>
+                                            @if (auth()->user()->role == 'admin')
+                                                <a href="javascript:void(0)" data-id="{{ $komposisi->id }}"
+                                                    class="btn btn-warning btn-sm btn-edit"><i class="fas fa-edit"></i></a>
+                                                <form action="{{ route('komposisi.destroy', $komposisi->id) }}"
+                                                    method="POST" class="d-inline" id="deleteForm">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger btn-sm btn-delete"><i
+                                                            class="fas fa-trash"></i></button>
+                                                </form>
+                                            @endif
                                         </td>
                                     </tr>
                                 @endforeach

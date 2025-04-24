@@ -1,9 +1,11 @@
 @extends('layouts.app', ['title' => 'Data User'])
 
-@section('action-button')
-    <a href="javascript:void(0)" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalUser">Tambah
-        user</a>
-@endsection
+@if (auth()->user()->role == 'admin')
+    @section('action-button')
+        <a href="javascript:void(0)" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalUser">Tambah
+            user</a>
+    @endsection
+@endif
 
 @section('content')
     <div class="row">
@@ -29,15 +31,17 @@
                                         <td>{{ $user->email }}</td>
                                         <td>{{ Str::upper($user->role) }}</td>
                                         <td>
-                                            <a href="javascript:void(0)" class="btn btn-warning btn-sm btn-edit"
-                                                title="Edit User" data-id="{{ $user->id }}"><i
-                                                    class="fas fa-edit"></i></a>
-                                            <form action="javascript:void(0)" method="POST" class="d-inline delete-form"
-                                                data-id="{{ $user->id }}">
-                                                @csrf
-                                                <button type="button" class="btn btn-danger btn-sm btn-delete"><i
-                                                        class="fas fa-trash"></i></button>
-                                            </form>
+                                            @if (auth()->user()->role == 'admin')
+                                                <a href="javascript:void(0)" class="btn btn-warning btn-sm btn-edit"
+                                                    title="Edit User" data-id="{{ $user->id }}"><i
+                                                        class="fas fa-edit"></i></a>
+                                                <form action="javascript:void(0)" method="POST"
+                                                    class="d-inline delete-form" data-id="{{ $user->id }}">
+                                                    @csrf
+                                                    <button type="button" class="btn btn-danger btn-sm btn-delete"><i
+                                                            class="fas fa-trash"></i></button>
+                                                </form>
+                                            @endif
                                         </td>
                                     </tr>
                                 @endforeach

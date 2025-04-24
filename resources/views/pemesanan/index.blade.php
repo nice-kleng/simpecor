@@ -38,9 +38,8 @@
                                     Rp. {{ number_format($pemesanan->harga, 0, ',', '.') }}
                                 </td>
                                 <td>
-                                    <span
-                                        class="badge bg-{{ $pemesanan->status_pembayaran == 'unpaid' ? 'secondary' : ($pemesanan->status_pembayaran == 'paid' ? 'success' : 'warning') }}">
-                                        {{ ucfirst($pemesanan->status_pembayaran) }}
+                                    <span class="badge {{ $pemesanan->status_pembayaran_label['class'] }}">
+                                        {{ $pemesanan->status_pembayaran_label['label'] }}
                                     </span>
                                 </td>
                                 <td>

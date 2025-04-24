@@ -28,6 +28,13 @@ class UserSeeder extends Seeder
             'role' => 'mitra',
         ]);
 
+        User::create([
+            'name' => 'Bambang Priyatno',
+            'email' => 'direktur@direktur.com',
+            'password' => bcrypt('direktur'),
+            'role' => 'direktur',
+        ]);
+
         Mitra::create([
             'user_id' => $mitra->id,
             'nama_mitra' => 'Mitra Jaya',

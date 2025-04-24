@@ -58,6 +58,6 @@ class Pemesanan extends Model
             'paid' => ['label' => 'Lunas', 'class' => 'badge-success'],
         ];
 
-        return $statuses[$this->status] ?? ['label' => 'Unknown', 'class' => 'badge-secondary'];
+        return $statuses[$this->status_pembayaran] ?? ['label' => 'Unknown', 'class' => 'badge-secondary'];
     }
 }
