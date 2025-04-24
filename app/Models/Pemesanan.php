@@ -53,7 +53,7 @@ class Pemesanan extends Model
     public function getStatusPembayaranLabelAttribute()
     {
         $statuses = [
-            'angsur' => ['label' => 'Belum Bayar', 'class' => 'badge-warning'],
+            'angsur' => ['label' => 'Angsur', 'class' => 'badge-warning'],
             'unpaid' => ['label' => 'Belum Bayar', 'class' => 'badge-danger'],
             'paid' => ['label' => 'Lunas', 'class' => 'badge-success'],
         ];

@@ -225,27 +225,6 @@
         </div>
     @endif
 
-    @if (auth()->user()->role === 'admin' && $pemesanan->bukti_pembayaran && $pemesanan->status_pembayaran === 'pending')
-        <div class="card mt-4">
-            <div class="card-header">
-                <h4 class="card-title">Verifikasi Pembayaran</h4>
-            </div>
-            <div class="card-body">
-                <form action="{{ route('pemesanan.verify-pembayaran', $pemesanan) }}" method="POST">
-                    @csrf
-                    <div class="form-group mb-3">
-                        <label>Keterangan (Wajib diisi jika pembayaran invalid)</label>
-                        <textarea name="keterangan" class="form-control" rows="3" required></textarea>
-                    </div>
-                    <div class="btn-group">
-                        <button type="submit" name="status" value="valid" class="btn btn-success">Valid</button>
-                        <button type="submit" name="status" value="invalid" class="btn btn-danger">Invalid</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    @endif
-
     {{-- @if ($pemesanan->status_pembayaran === 'invalid')
         <div class="card mt-4">
             <div class="card-header">
@@ -273,38 +252,6 @@
             </div>
         </div>
     @endif --}}
-
-    @if (auth()->user()->role === 'admin' &&
-            now()->gte($pemesanan->tanggal_pengecoran) &&
-            $pemesanan->status_pengerjaan === 'disetujui')
-        <div class="card mt-4">
-            <div class="card-header">
-                <h4 class="card-title">Update Status Pengerjaan</h4>
-            </div>
-            <div class="card-body">
-                <form action="{{ route('pemesanan.update-status', $pemesanan) }}" method="POST">
-                    @csrf
-                    <div class="form-group">
-                        <label class="form-label">Catatan Pengerjaan</label>
-                        <textarea name="catatan_pengerjaan" id="catatan_pengerjaan" rows="5" class="form-control"></textarea>
-                        <small class="fst-italic text-muted">Isi jika ada catatan tambahan</small>
-                    </div>
-                    <button type="submit" name="status" value="selesai" class="btn btn-success">Selesai</button>
-                </form>
-            </div>
-        </div>
-        {{-- <div class="card mt-4">
-            <div class="card-header">
-                <h4 class="card-title">Surat Jalan</h4>
-            </div>
-            <div class="card-body">
-                <a href="{{ route('pemesanan.download-surat-jalan', $pemesanan->id) }}" title="Download Surat Jalan"
-                    class="btn btn-sm btn-danger">
-                    <i class="fas fa-file-pdf"></i> Surat Jalan
-                </a>
-            </div>
-        </div> --}}
-    @endif
 
     <div class="card mt-4">
         <div class="card-header">
@@ -418,11 +365,45 @@
                 </table>
             </div>
         </div>
-    @endsection
+    </div>
 
-    @push('scripts')
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js"></script>
-        {{-- <script>
+    @if (auth()->user()->role === 'admin' &&
+            now()->gte($pemesanan->tanggal_pengecoran) &&
+            $pemesanan->status_pengerjaan === 'disetujui' &&
+            $pemesanan->pembayaran()->where('status', 'valid')->count() != 0)
+        <div class="card mt-4">
+            <div class="card-header">
+                <h4 class="card-title">Update Status Pengerjaan</h4>
+            </div>
+            <div class="card-body">
+                <form action="{{ route('pemesanan.update-status', $pemesanan) }}" method="POST">
+                    @csrf
+                    <div class="form-group">
+                        <label class="form-label">Catatan Pengerjaan</label>
+                        <textarea name="catatan_pengerjaan" id="catatan_pengerjaan" rows="5" class="form-control"></textarea>
+                        <small class="fst-italic text-muted">Isi jika ada catatan tambahan</small>
+                    </div>
+                    <button type="submit" name="status" value="selesai" class="btn btn-success">Selesai</button>
+                </form>
+            </div>
+        </div>
+        {{-- <div class="card mt-4">
+            <div class="card-header">
+                <h4 class="card-title">Surat Jalan</h4>
+            </div>
+            <div class="card-body">
+                <a href="{{ route('pemesanan.download-surat-jalan', $pemesanan->id) }}" title="Download Surat Jalan"
+                    class="btn btn-sm btn-danger">
+                    <i class="fas fa-file-pdf"></i> Surat Jalan
+                </a>
+            </div>
+        </div> --}}
+    @endif
+@endsection
+
+@push('scripts')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js"></script>
+    {{-- <script>
         $(document).ready(function() {
             $('#alamat_lokasi').on('input', function() {
                 var text = $(this).val();
@@ -446,4 +427,4 @@
             });
         });
     </script> --}}
-    @endpush
+@endpush

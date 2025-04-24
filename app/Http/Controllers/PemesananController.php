@@ -96,11 +96,11 @@ class PemesananController extends Controller
             return redirect()->back()->with('warning', 'Pembayaran sudah lunas');
         }
 
-        if ($pemesanan->pembayaran->count() > 0) {
-            $pemesanan->update([
-                'status_pembayaran' => 'angsur',
-            ]);
-        }
+        // if ($pemesanan->pembayaran->count() > 0) {
+        $pemesanan->update([
+            'status_pembayaran' => 'angsur',
+        ]);
+        // }
 
         Pembayaran::create([
             'pemesanan_id' => $pemesanan->id,
