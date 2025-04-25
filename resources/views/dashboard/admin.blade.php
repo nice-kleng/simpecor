@@ -182,7 +182,7 @@
     </div>
 @endsection
 
-@push('scripts')
+{{-- @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         const ctx = document.getElementById('pemesananChart');
@@ -196,6 +196,57 @@
                     borderColor: 'rgb(75, 192, 192)',
                     tension: 0.1
                 }]
+            }
+        });
+    </script>
+@endpush --}}
+@push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Grafik Pemesanan
+        const pemesananCtx = document.getElementById('pemesananChart');
+        new Chart(pemesananCtx, {
+            type: 'line',
+            data: {
+                labels: {!! json_encode($chart_labels) !!},
+                datasets: [{
+                    label: 'Jumlah Pemesanan',
+                    data: {!! json_encode($chart_data) !!},
+                    borderColor: 'rgb(75, 192, 192)',
+                    tension: 0.1,
+                    yAxisID: 'y'
+                }, {
+                    label: 'Pendapatan (Rp)',
+                    data: {!! json_encode($chart_pendapatan) !!},
+                    borderColor: 'rgb(54, 162, 235)',
+                    tension: 0.1,
+                    yAxisID: 'y1'
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                        title: {
+                            display: true,
+                            text: 'Jumlah Pemesanan'
+                        }
+                    },
+                    y1: {
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+                        title: {
+                            display: true,
+                            text: 'Pendapatan (Rp)'
+                        },
+                        grid: {
+                            drawOnChartArea: false
+                        }
+                    }
+                }
             }
         });
     </script>
