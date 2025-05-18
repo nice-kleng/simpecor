@@ -242,8 +242,10 @@
                                     </div>
 
                                     <div class="register-link text-center">
-                                        Belum punya akun? Silahkan hubungi admin.
+                                        Belum punya akun? <a href="#" id="click-admin">Daftar sekarang</a>
                                     </div>
+
+                                    <div id="alert-container" class="mt-3"></div>
                                 </div>
                             </div>
                         </div>
@@ -264,6 +266,25 @@
             } else {
                 password.type = 'password';
             }
+        });
+
+        document.getElementById('click-admin').addEventListener('click', function(e) {
+            e.preventDefault();
+            const alertContainer = document.getElementById('alert-container');
+            alertContainer.innerHTML = `
+            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                <strong>Info!</strong> Silahkan hubungi admin.
+            </div>
+        `;
+            // Hilangkan alert setelah 3 detik
+            setTimeout(() => {
+                const alert = alertContainer.querySelector('.alert');
+                if (alert) {
+                    alert.classList.remove('show');
+                    alert.classList.add('hide');
+                    setTimeout(() => alertContainer.innerHTML = '', 300); // Hapus dari DOM
+                }
+            }, 3000);
         });
     </script>
 </body>
