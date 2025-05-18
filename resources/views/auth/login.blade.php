@@ -179,7 +179,7 @@
                             <div class="col-md-6 d-none d-md-block login-image">
                                 <div
                                     class="h-100 d-flex flex-column justify-content-end p-4 text-white login-image-content">
-                                    <h2 class="fw-bold">Membangun Masa Depan Bersama</h2>
+                                    <h2 class="fw-bold">Membangun Masa Depan Bersama PT BETON INDOTAMA SURYA JAYA</h2>
                                     <p class="mb-0">Solusi konstruksi modern untuk proyek impian Anda</p>
                                 </div>
                             </div>
@@ -242,7 +242,7 @@
                                     </div>
 
                                     <div class="register-link text-center">
-                                        Belum punya akun? <a href="#">Daftar sekarang</a>
+                                        Belum punya akun? Silahkan hubungi admin.
                                     </div>
                                 </div>
                             </div>
