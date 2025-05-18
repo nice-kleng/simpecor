@@ -276,7 +276,7 @@
                     </nav> --}}
                     <div class="copyright">
                         2024, made with <i class="fa fa-heart heart text-danger"></i> by
-                        <a href="https://simpecor.unipduskripsi.my.id">PT BETON INDOTAMA SURYA JAYA</a>
+                        <a href="">PT BETON INDOTAMA SURYA JAYA</a>
                     </div>
                     <div>
                         {{-- Distributed by
